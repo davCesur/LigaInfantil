@@ -1,6 +1,5 @@
 import java.util.concurrent.ThreadLocalRandom;
 
-import Liga.Calendario;
 
 public class Calendario {
 	int max = 6;
