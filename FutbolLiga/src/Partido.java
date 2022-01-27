@@ -70,8 +70,10 @@ public class Partido {
 	}
 	
 	public String toString() {
-		
-		
+		return "Partido: " + this.getNombre() +" /n"
+				+ "Arbitro: " + arbitros +" /n "
+				+ "Resultado:" + resultado +" /n"
+				+ "Fecha: " + calendario;
 	}
 	
 	

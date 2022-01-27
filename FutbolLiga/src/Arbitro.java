@@ -16,5 +16,6 @@ public class Arbitro extends Persona {
 				+ ", getEdad()=" + getEdad() + "]";
 	}
 	
+	
 
 }
