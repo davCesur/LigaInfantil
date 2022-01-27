@@ -6,15 +6,10 @@
  * Genera:
  *  3 árbitros
  *  resultado
- * 
- * 
  */
 
 public class Partido {
 
-	// equipo[0].getNombre + " - " + equipo[1].getNombre
-	private String nombre;
-	
 	// 0 => equipo local | 1 => equipo visitante
 	private Equipo[] equipos= new Equipo[2];
 	
@@ -46,11 +41,16 @@ public class Partido {
 
 	public void setArbitros(Arbitro[] arbitros) {
 		
-		Arbitro principal = new Arbitro();  
-		Arbitro linier = new Arbitro();  
-		Arbitro asistente = new Arbitro(); 
+		// Principal
+		this.arbitros[0] = new Arbitro();
+		// Linier
+		this.arbitros[1] = new Arbitro();
+		// Asistente
+		this.arbitros[2] = new Arbitro();
 		
-		this.arbitros = arbitros;
+		
+		
+		
 	}
 
 	public Calendario getCalendario() {
