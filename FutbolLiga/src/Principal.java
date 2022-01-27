@@ -7,7 +7,7 @@ public class Principal {
 		//Crear una Lista de Equipo
 		
 		int edad = (int) Math.floor(Math.random()*15)+4;
-		int numeroEquipos = (int) Math.floor(Math.random()*13)+4;
+		int numeroEquipos = (int) (Math.floor(Math.random()*3)+4)*2; // Generamos un número par de equipos
 		Equipo[] listaEquipos = crearEquipos(numeroEquipos, edad);
 		
 		//Imprimimos los equipos
@@ -15,8 +15,12 @@ public class Principal {
 		for (Equipo e: listaEquipos) {
 			System.out.println(e.getNombre());
 		}
-
-
+		
+		
+		for (int i=0;i<numeroEquipos/2;i++) {	//Creamos jornada entre número de equipos		
+				System.out.println("Jornada "+(i+1)+": ");
+				generarJornada();
+		}
 	}
 
 	private static Jugador[] crearJugadores(int numeroJugadores, int edad, Equipo equipo) {
@@ -160,8 +164,22 @@ public class Principal {
 		return entrenador;
 	}
 	
-	
-	private static Partidos crearPartidos(Partido partido) {
+	private static String[] generarJornada() {
 		
-	}
+   		String []DiaSemana = {"Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"};
+   		   		
+   		Calendario calendario = new Calendario();
+		
+		//Elegimos un número random al que se asigna a un número de día.
+		for (int i=0;i<4;i++) {
+			int numero = (int) Math.floor(Math.random()*DiaSemana.length);
+			String Dia = DiaSemana[numero];
+			calendario.setDia(Dia);
+			System.out.print(calendario.getDia()+" ");
+		}
+   		System.out.println();
+		
+   
+   	   	return DiaSemana;
+   	}
 }
