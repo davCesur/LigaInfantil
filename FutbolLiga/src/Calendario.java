@@ -1,6 +1,5 @@
 import java.util.concurrent.ThreadLocalRandom;
 
-
 public class Calendario {
 	int max = 6;
 	int min = 0;
@@ -115,7 +114,7 @@ public class Calendario {
 		new Calendario(8);
 	}
 	public static int numeroAleatorioEnRango(int minimo, int maximo) {
-        // nextInt regresa en rango pero con límite superior exclusivo, por eso sumamos 1
+        // nextInt regresa en rango pero con lï¿½mite superior exclusivo, por eso sumamos 1
         return ThreadLocalRandom.current().nextInt(minimo, maximo + 1);
     }
 	
