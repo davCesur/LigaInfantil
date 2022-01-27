@@ -15,9 +15,6 @@ public class Principal {
 		for (Equipo e: listaEquipos) {
 			System.out.println(e.getNombre());
 		}
-		
-
-		
 
 
 	}
@@ -161,5 +158,10 @@ public class Principal {
 		entrenador.setNumeroLicencia(licencia);
 		
 		return entrenador;
+	}
+	
+	
+	private static Partidos crearPartidos(Partido partido) {
+		
 	}
 }
