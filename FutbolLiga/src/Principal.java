@@ -21,6 +21,7 @@ public class Principal {
 				System.out.println("Jornada "+(i+1)+": ");
 				generarJornada(numeroEquipos);
 		}
+		
 	}
 
 	private static Jugador[] crearJugadores(int numeroJugadores, int edad, Equipo equipo) {
