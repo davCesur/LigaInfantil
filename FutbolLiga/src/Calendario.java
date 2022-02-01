@@ -24,6 +24,28 @@ public class Calendario extends Liga {
 		this.Dia = Dia;
 	}
 	
+	public static String[] generarJornada(int numeroEquipos) {
+		
+   		String []DiaSemana = {"Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"};
+   		
+   		String []DiaAleatorio = new String [numeroEquipos/2];
+   		Calendario calendario = new Calendario();
+		
+		//Elegimos un número random al que se asigna a un número de día.
+		for (int i=0;i<numeroEquipos/2;i++) {
+			int numero = (int) Math.floor(Math.random()*DiaSemana.length);
+			String Dia = DiaSemana[numero];
+			calendario.setDia(Dia);
+			DiaAleatorio[i] = calendario.getDia();
+		}
+   
+   	   	return DiaAleatorio;
+   	}
+	
+	
+	
+	
+	
 //	
 //	 
 //	 private int[] equipos;
