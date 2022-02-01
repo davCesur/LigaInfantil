@@ -7,11 +7,8 @@ public class Principal {
 		Calendario calendario = new Calendario();
 		
 		Partido partido = new Partido();
-		partido.setArbitros(crearArbitros());
 		partido.setEquipos(crearEquipos(2, 27));
 		partido.setCalendario(calendario);
-		int[] resultado = {0,2};
-		partido.setResultado(resultado);
 		
 		ui.print(partido.toString());
 		
@@ -33,7 +30,6 @@ public class Principal {
 			System.out.println(e.getNombre());
 		}
 		
-		Calendario calendario = new Calendario();
 		for (int i=0;i<numeroEquipos/2;i++) {	//Creamos jornada entre número de equipos		
 				System.out.println("Jornada "+(i+1)+": ");
 				Calendario.generarJornada(numeroEquipos);
@@ -183,11 +179,5 @@ public class Principal {
 		
 		return entrenador;
 	}
-<<<<<<< Updated upstream
-	
-	
-	
-	
-=======
->>>>>>> Stashed changes
+
 }
