@@ -165,8 +165,11 @@ public class Principal {
 		
 		return entrenador;
 	}
+<<<<<<< Updated upstream
 	
 	
 	
 	
+=======
+>>>>>>> Stashed changes
 }
