@@ -24,26 +24,50 @@ public class Calendario extends Liga {
 		this.Dia = Dia;
 	}
 	
-	public static String[] generarJornada(int numeroEquipos) {
+	public static String[][] generarJornada(int numeroEquipos) {
+		String [][] enfrentamientos = new String [numeroEquipos/2][2];
 		
-   		String []DiaSemana = {"Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"};
-   		
-   		String []DiaAleatorio = new String [numeroEquipos/2];
-   		Calendario calendario = new Calendario();
-		
-		//Elegimos un número random al que se asigna a un número de día.
-		for (int i=0;i<numeroEquipos/2;i++) {
-			int numero = (int) Math.floor(Math.random()*DiaSemana.length);
-			String Dia = DiaSemana[numero];
-			calendario.setDia(Dia);
-			DiaAleatorio[i] = calendario.getDia();
+		Equipo e = new Equipo();
+		for (int i=0;i<numeroEquipos/2;i++) { 
+			for (int j=0;j<2;j++) {
+				enfrentamientos [i][j] = e.getNombre();
+			}
 		}
-   
-   	   	return DiaAleatorio;
-   	}
+		return enfrentamientos;
+	}
+		
+	//		String [][] enfrentamientos = new String [numero];
+//   		String []DiaSemana = {"Lunes","Martes","Miercoles","Jueves","Viernes","Sabado","Domingo"};
+//   		
+//   		String []DiaAleatorio = new String [numeroEquipos/2];
+//   		Calendario calendario = new Calendario();
+//		
+//		//Elegimos un número random al que se asigna a un número de día.
+//		for (int i=0;i<numeroEquipos/2;i++) {
+//			int numero = (int) Math.floor(Math.random()*DiaSemana.length);
+//			String Dia = DiaSemana[numero];
+//			calendario.setDia(Dia);
+//			DiaAleatorio[i] = calendario.getDia();
+//		}
+//   
+//   	   	return DiaAleatorio;
+	//	return enfrentamiento;
+//   	}
 	
-	
-	
+//	public static String[][] generarEnfrentamientos (String [] DiaAleatorio, int numeroEquipos) {
+//		String [][] enfrentamiento = new String [numeroEquipos][2];
+//		String[] team = new String [2];
+//		Equipo equipo = new Equipo ();
+//		for (int i=0;i<DiaAleatorio.length;i++) {
+//			for (int j=0;j<2;j++) {
+//				team [j]= equipo.getNombre();
+//				enfrentamiento [i][j] = DiaAleatorio[i]+team[j];
+//				System.out.println(enfrentamiento[i][j]);
+//			}
+//		}
+		
+//		return enfrentamiento;
+//	}
 	
 	
 //	

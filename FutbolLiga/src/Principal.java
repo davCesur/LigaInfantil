@@ -18,9 +18,11 @@ public class Principal {
 		}
 		
 		Calendario calendario = new Calendario();
-		for (int i=0;i<numeroEquipos/2;i++) {	//Creamos jornada entre número de equipos		
+		for (int i=0;i<numeroEquipos-1;i++) {	//Creamos jornada entre número de equipos		
 				System.out.println("Jornada "+(i+1)+": ");
-				Calendario.generarJornada(numeroEquipos);
+				//Calendario.generarJornada(numeroEquipos);
+				//System.out.println(Calendario.generarJornada(numeroEquipos));
+
 		}
 		
 	}
@@ -165,11 +167,5 @@ public class Principal {
 		
 		return entrenador;
 	}
-<<<<<<< Updated upstream
-	
-	
-	
-	
-=======
->>>>>>> Stashed changes
+
 }
