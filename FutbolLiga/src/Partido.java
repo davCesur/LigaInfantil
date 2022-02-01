@@ -1,3 +1,8 @@
+
+/**
+ * ######### PENDIENTE DE CALENDARIO
+ */
+
 /**
  * Monta un partido.
  * Necesita:
@@ -9,6 +14,14 @@
  */
 
 public class Partido {
+	
+	/**
+	 * Constructor
+	 */
+	public Partido() {
+		setArbitros();
+		setResultado();
+	}
 
 	// 0 => equipo local | 1 => equipo visitante
 	private Equipo[] equipos= new Equipo[2];
@@ -34,14 +47,6 @@ public class Partido {
 		this.equipos = equipos;
 	}
 
-	public Arbitro[] getArbitros() {
-		return arbitros;
-	}
-
-	public void setArbitros(Arbitro[] arbitros) {
-		this.arbitros = crearArbitros();
-	}
-
 	public Calendario getCalendario() {
 		return calendario;
 	}
@@ -54,40 +59,23 @@ public class Partido {
 		return resultado;
 	}
 
-	public void setResultado(int[] resultado) {
-		
-		this.resultado = generarResultados();
-	}
-	
-	public String toString() {
-		return "Partido:\n " + this.getNombre() +" \n"
-				+ "Arbitro:\n " + arbitros.toString() +" \n"
-				+ "Resultado:\n " + equipos[0].getNombre() + ": " + resultado[0]
-				   + "\n " + equipos[1].getNombre() + ": " + resultado[1] + " \n"
-				+ "Fecha:\n " + calendario.toString() +" \n\n ";
-	}
-	
-	
-	/**
-	 * Genera un resultado para los partidos
-	 */
-	private static int[] generarResultados() {
-		
+	public void setResultado() {
 		int resultados[] = new int[2];
 		resultados[0] = (int) Math.floor(Math.random()*10);
 		resultados[1] = (int) Math.floor(Math.random()*10);
 		
-		return resultados;
-
+		this.resultado = resultados;
 	}
-	
+
+	public Arbitro[] getArbitros() {
+		return arbitros;
+	}
+
 	/**
-	 * 
-	 * Genera un array de 3 árbitros (Principal, linier y asistente).
+	 * Establece un array de 3 árbitros (Principal, linier y asistente).
 	 * @return array generado.
 	 */
-
-	private static Arbitro[] crearArbitros() {
+	public void setArbitros() {
 		//Listado de Nombres, Apellidos, Posiciones para generador random
 		String[] nombres = {"Antonio", "Pepito", "Alejandra", "Ismael", "Hugo", "Oliver","Kalesi",
 				"Ingrid","Astrid","Indira","Jenny","Jessi","Vane","Joel","Bruno",
@@ -124,9 +112,26 @@ public class Partido {
 			arbitros[i] = arbitro;
 		}
 		
-		return arbitros;
-		
+		this.arbitros = arbitros;
 	}
+
+
+	public String toString() {
+		
+		String retorno="";
+		
+		retorno = "Partido:\n " + this.getNombre() +" \n"
+				+ "Arbitro:\n";
+		for( int i=0 ; i<arbitros.length ; i++ ) {
+			retorno += " [" + i + "] " + arbitros[i].toString() + "\n";
+		}
+		retorno += "Resultado:\n " + equipos[0].getNombre() + ": " + resultado[0]
+			   + "\n " + equipos[1].getNombre() + ": " + resultado[1] + " \n"
+				+ "Fecha:\n " + calendario.toString() +" \n\n ";
+		
+		return retorno;
+	}
+	
 	
 
 
