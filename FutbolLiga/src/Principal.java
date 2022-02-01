@@ -22,7 +22,7 @@ public class Principal {
 				System.out.println("Jornada "+(i+1)+": ");
 				//Calendario.generarJornada(numeroEquipos);
 				//System.out.println(Calendario.generarJornada(numeroEquipos));
-
+				calendario.generarJornada(numeroEquipos);
 		}
 		
 	}

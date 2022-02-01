@@ -30,7 +30,8 @@ public class Calendario extends Liga {
 		Equipo e = new Equipo();
 		for (int i=0;i<numeroEquipos/2;i++) { 
 			for (int j=0;j<2;j++) {
-				enfrentamientos [i][j] = e.getNombre();
+				enfrentamientos [i][j] = e.getClub();
+				System.out.println(enfrentamientos[i][j]);
 			}
 		}
 		return enfrentamientos;
