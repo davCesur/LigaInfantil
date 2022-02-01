@@ -3,7 +3,23 @@ public class Principal {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		ui.print("asdf");
+		//Montando un partido
+		Calendario calendario = new Calendario();
+		
+		Partido partido = new Partido();
+		partido.setArbitros(crearArbitros());
+		partido.setEquipos(crearEquipos(2, 27));
+		partido.setCalendario(calendario);
+		int[] resultado = {0,2};
+		partido.setResultado(resultado);
+		
+		ui.print(partido.toString());
+		
+		
+		
+		
+		//partido.setArbitros();
+		
 		
 		//Crear una Lista de Equipo
 		
@@ -130,6 +146,8 @@ public class Principal {
 		return listaEquipos;
 		
 	}
+
+
 
 	private static Entrenador crearEntrenador(Equipo equipo) {
 		//Listado de Nombres, Apellidos, Posiciones para generador random
