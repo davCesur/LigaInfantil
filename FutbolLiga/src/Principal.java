@@ -3,19 +3,6 @@ public class Principal {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
-		//Montando un partido
-		Calendario calendario = new Calendario();
-		
-		Partido partido = new Partido();
-		partido.setEquipos(crearEquipos(2, 27));
-		partido.setCalendario(calendario);
-		ui.print(partido.toString());
-		
-		
-		
-		
-		//partido.setArbitros();
-		
 		
 		//Crear una Lista de Equipo
 		
@@ -29,9 +16,12 @@ public class Principal {
 			System.out.println(e.getNombre());
 		}
 		
-		for (int i=0;i<numeroEquipos/2;i++) {	//Creamos jornada entre número de equipos		
+		Calendario calendario = new Calendario();
+		for (int i=0;i<numeroEquipos-1;i++) {	//Creamos jornada entre número de equipos		
 				System.out.println("Jornada "+(i+1)+": ");
-				Calendario.generarJornada(numeroEquipos);
+				//Calendario.generarJornada(numeroEquipos);
+				//System.out.println(Calendario.generarJornada(numeroEquipos));
+				calendario.generarJornada(numeroEquipos);
 		}
 		
 	}
@@ -141,8 +131,6 @@ public class Principal {
 		return listaEquipos;
 		
 	}
-
-
 
 	private static Entrenador crearEntrenador(Equipo equipo) {
 		//Listado de Nombres, Apellidos, Posiciones para generador random
