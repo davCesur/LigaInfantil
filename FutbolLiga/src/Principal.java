@@ -8,28 +8,24 @@ public class Principal {
 		
 		Partido partido = new Partido();
 		partido.setEquipos(crearEquipos(2, 27));
-		partido.setCalendario(calendario);
+		//partido.setJornada(jornada);
 		ui.print(partido.toString());
 
 		
-
 		
 		
-		//Crear una Lista de Equipo
+		//Crear una Lista de Equipos
 		int edad = (int) Math.floor(Math.random()*15)+4;
 		int numeroEquipos = (int) (Math.floor(Math.random()*3)+4)*2; // Generamos un número par de equipos
 		Equipo[] listaEquipos = crearEquipos(numeroEquipos, edad);
 
-		
-
-		
-		//Imprimimos los equipos
-		System.out.println("Numero de equipos: "+numeroEquipos);
-		for (Equipo e: listaEquipos) {
-			System.out.println(e.getNombre());
-		}
-		
-		for (int i=0;i<numeroEquipos-1;i++) {	//Creamos jornada entre número de equipos		
+//Imprimimos los equipos
+System.out.println("Numero de equipos: "+numeroEquipos);
+for (Equipo e: listaEquipos) {
+	System.out.println(e.getNombre());
+}
+//		Creamos jornada entre número de equipos
+		for (int i=0;i<numeroEquipos-1;i++) {		
 				System.out.println("Jornada "+(i+1)+": ");
 				//Calendario.generarJornada(numeroEquipos);
 				//System.out.println(Calendario.generarJornada(numeroEquipos));
@@ -88,6 +84,12 @@ public class Principal {
 	}
 
 	private static Equipo[] crearEquipos(int numeroEquipos,int edad) {
+		
+		if( numeroEquipos%2!=0 ) {
+			//El número de equipos es impar
+			ui.print("Error: El númeor de equipos a generar es impar");
+			System.exit(1);
+		}
 		
 		String [] nombreBarrios = {"El Candado", "Huelin", "Tiro Pichón", "Rincón de la Victoria", "La Rosaleda", "Torremolinos",
 				"Velez Málaga","Cerrado de Calderon", "El Puerto de la Torre", "Bresca", "Mezquitilla", "Teatinos", "Motril",

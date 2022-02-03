@@ -29,7 +29,8 @@ public class Partido {
 	// 0 => principal | 1 => linier | 2 => asistente
 	private Arbitro[] arbitros = new Arbitro[3];
 
-	private Calendario calendario;
+	/** pendiente de hacer Jornadas **/
+	//private Jornadas jornada;
 
 	// 0 => equipo local | 1 => equipo visitante
 	private int resultado[] = {0,0};
@@ -47,13 +48,10 @@ public class Partido {
 		this.equipos = equipos;
 	}
 
-	public Calendario getCalendario() {
-		return calendario;
-	}
-
-	public void setCalendario(Calendario calendario) {
-		this.calendario = calendario;
-	}
+	/** pendiente de hacer Jornadas **/
+	/* public Jornadas getJornada() {
+		return jornada;
+	} */
 
 	public int[] getResultado() {
 		return resultado;
@@ -61,8 +59,8 @@ public class Partido {
 
 	public void setResultado() {
 		int resultados[] = new int[2];
-		resultados[0] = (int) Math.floor(Math.random()*10);
-		resultados[1] = (int) Math.floor(Math.random()*10);
+		resultados[0] = (int) Math.floor(Math.random()*11);
+		resultados[1] = (int) Math.floor(Math.random()*11);
 		
 		this.resultado = resultados;
 	}
@@ -126,8 +124,7 @@ public class Partido {
 			retorno += " [" + i + "] " + arbitros[i].toString() + "\n";
 		}
 		retorno += "Resultado:\n " + equipos[0].getNombre() + ": " + resultado[0]
-			   + "\n " + equipos[1].getNombre() + ": " + resultado[1] + " \n"
-				+ "Fecha:\n " + calendario.toString() +" \n\n ";
+			   + "\n " + equipos[1].getNombre() + ": " + resultado[1] + " \n";
 		
 		return retorno;
 	}
