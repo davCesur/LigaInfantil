@@ -9,7 +9,6 @@ public class Principal {
 		Partido partido = new Partido();
 		partido.setEquipos(crearEquipos(2, 27));
 		partido.setCalendario(calendario);
-		
 		ui.print(partido.toString());
 		
 		
