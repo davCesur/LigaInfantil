@@ -1,6 +1,6 @@
 
 /**
- * ######### PENDIENTE DE CALENDARIO
+ * ######### PENDIENTE DE JORNADA
  */
 
 /**
@@ -19,7 +19,6 @@ public class Partido {
 	 * Constructor
 	 */
 	public Partido() {
-		setArbitros();
 		setResultado();
 	}
 
@@ -69,49 +68,10 @@ public class Partido {
 		return arbitros;
 	}
 
-	/**
-	 * Establece un array de 3 árbitros (Principal, linier y asistente).
-	 * @return array generado.
-	 */
-	public void setArbitros() {
-		//Listado de Nombres, Apellidos, Posiciones para generador random
-		String[] nombres = {"Antonio", "Pepito", "Alejandra", "Ismael", "Hugo", "Oliver","Kalesi",
-				"Ingrid","Astrid","Indira","Jenny","Jessi","Vane","Joel","Bruno",
-				"Sasha","Billie","Masha","Pingu"};
-		String[] apellidos = {"Messi", "Vinicius", "Cristiano", "Ronaldo", "Piqué","Bale (lesionado)",
-				"Amunike","N'kono","Butragueño","Sanchís","Neymar","Batistuta","Maradona",
-				"Pelé","Beckenbauer"};
-		
-		Arbitro[] arbitros = new Arbitro[3];
-		
-		for( int i=0 ; i<arbitros.length ; i++ ) {
-			
-			Arbitro arbitro = new Arbitro();
-			
-			//Nombre
-			int numero = (int) Math.floor(Math.random()*nombres.length);
-			String nombre = nombres[numero];
-			arbitro.setNombre(nombre);
-
-			//Apellidos
-			numero = (int) Math.floor(Math.random()*apellidos.length);
-			String apellido1 = apellidos[numero];
-			numero = (int) Math.floor(Math.random()*apellidos.length);
-			String apellido2 = apellidos[numero];
-			arbitro.setApellidos(apellido1+" "+apellido2);
-			
-			//Edad
-			int edad = (int) Math.floor(Math.random()*47)+18;
-			arbitro.setEdad(edad);
-			//Licencia
-			int licencia = (int) Math.floor(Math.random()*100000);
-			arbitro.setLicencia(licencia);
-			
-			arbitros[i] = arbitro;
-		}
-		
-		this.arbitros = arbitros;
+	public void setArbitros(Arbitro[] arbitros) {
+		this.arbitros=arbitros;
 	}
+
 
 
 	public String toString() {
