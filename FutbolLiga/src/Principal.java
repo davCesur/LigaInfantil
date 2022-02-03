@@ -3,12 +3,25 @@ public class Principal {
 	public static void main(String[] args) {
 		// TODO Auto-generated method stub
 		
+		//Montando un partido
+		Calendario calendario = new Calendario();
+		
+		Partido partido = new Partido();
+		partido.setEquipos(crearEquipos(2, 27));
+		partido.setCalendario(calendario);
+		ui.print(partido.toString());
+
+		
+
+		
 		
 		//Crear una Lista de Equipo
-		
 		int edad = (int) Math.floor(Math.random()*15)+4;
 		int numeroEquipos = (int) (Math.floor(Math.random()*3)+4)*2; // Generamos un número par de equipos
 		Equipo[] listaEquipos = crearEquipos(numeroEquipos, edad);
+
+		
+
 		
 		//Imprimimos los equipos
 		System.out.println("Numero de equipos: "+numeroEquipos);
@@ -16,7 +29,6 @@ public class Principal {
 			System.out.println(e.getNombre());
 		}
 		
-		Calendario calendario = new Calendario();
 		for (int i=0;i<numeroEquipos-1;i++) {	//Creamos jornada entre número de equipos		
 				System.out.println("Jornada "+(i+1)+": ");
 				//Calendario.generarJornada(numeroEquipos);
