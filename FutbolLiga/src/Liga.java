@@ -11,8 +11,6 @@ public class Liga {
 	public Liga() {
 	}
 	
-	
-	
 	public String getNombre() {
 		return nombre;
 	}
@@ -20,9 +18,6 @@ public class Liga {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-
-
-
 
 	public Equipo[] getEquipos() {
 		return equipos;
@@ -32,9 +27,6 @@ public class Liga {
 		this.equipos = equipos;
 	}
 
-
-	
-	
 	public Calendario getCalendario() {
 		return calendario;
 	}

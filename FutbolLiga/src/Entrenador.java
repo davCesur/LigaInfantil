@@ -1,7 +1,7 @@
 
 public class Entrenador extends Persona{
-	
-	private int numeroLicencia;
+
+	int numeroLicencia;
 	private Equipo equipo;
 	
 	public int getNumeroLicencia() {
@@ -16,15 +16,10 @@ public class Entrenador extends Persona{
 	public void setEquipo(Equipo equipo) {
 		this.equipo = equipo;
 	}
+	
 	@Override
 	public String toString() {
-		return super.toString()+"\n"+
-				"Numero Licencia: "+this.numeroLicencia+"\n";
+		return super.toString()+"Entrenador"+
+				"[Licencia: "+this.numeroLicencia+"\n"+ "Apellidos: "+getApellidos()+"\n"+"Equipo: "+getEquipo()+"]";
 	}
-	
-	
-	
-	
-
-
 }

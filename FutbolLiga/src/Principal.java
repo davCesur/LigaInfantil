@@ -76,7 +76,6 @@ public class Principal {
 			//Metemos el equipo en el array de equipos
 			listaEquipos[i]=equipo;
 		}
-		
 		return listaEquipos;
 	}
 

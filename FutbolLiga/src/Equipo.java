@@ -21,18 +21,14 @@ public class Equipo {
 	public void setNombre(String nombre) {
 		this.nombre = nombre;
 	}
-	
-	
-	
+		
 	public String getClub() {
 		return club;
 	}
 	public void setClub(String club) {
 		this.club = club;
 	}
-	
-	
-	
+		
 	public Entrenador getEntrenador() {
 		return entrenador;
 	}
@@ -41,16 +37,12 @@ public class Equipo {
 		this.entrenador = entrenador;
 	}
 	
-	
-	
 	public String getEquipacionCasa() {
 		return equipacionCasa;
 	}
 	public void setEquipacionCasa(String equipacionCasa) {
 		this.equipacionCasa = equipacionCasa;
 	}
-	
-	
 	
 	public String getEquipacionFuera() {
 		return equipacionFuera;
@@ -69,8 +61,6 @@ public class Equipo {
 		this.jugadores = jugadores;
 	}
 
-	
-	
 	public int getEdadJugadores() {
 		return edadJugadores;
 	}
@@ -89,8 +79,6 @@ public class Equipo {
 		this.numeroJugadores = numeroJugadores;
 	}
 
-	
-	
 	private String toStringJugadores(Jugador[] jugadores) {
 		String listadoJugadores="";
 		for (Jugador j: jugadores) {
@@ -100,7 +88,6 @@ public class Equipo {
 		
 	}
 
-	
 	@Override
 	public String toString() {
 		return "Nombre del Equipo: "+this.nombre+"\n"+

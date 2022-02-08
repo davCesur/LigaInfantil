@@ -1,15 +1,6 @@
 
 public class Arbitro extends Persona {
-	int edad;
 	int licencia;
-	
-	public int getEdad() {
-		return edad;
-	}
-
-	public void setEdad(int edad) {
-		this.edad = edad;
-	}
 
 	public int getLicencia() {
 		return licencia;
