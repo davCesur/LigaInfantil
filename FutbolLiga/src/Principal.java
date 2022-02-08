@@ -31,7 +31,7 @@ public class Principal {
 		
 		if( numeroEquipos%2!=0 ) {
 			//El número de equipos es impar
-			ui.print("Error: El númeor de equipos a generar es impar");
+			ui.print("Error: El número de equipos a generar es impar");
 			System.exit(1);
 		}
 		
@@ -76,6 +76,8 @@ public class Principal {
 			//Metemos el equipo en el array de equipos
 			listaEquipos[i]=equipo;
 		}
+		Entrenador entrenador = new Entrenador();
+		ui.print(entrenador.toString());
 		return listaEquipos;
 	}
 
@@ -133,6 +135,7 @@ public class Principal {
 		String[] apellidos = {"Messi", "Vinicius", "Cristiano", "Ronaldo", "Piqué","Bale (lesionado)",
 				"Amunike","N'kono","Butragueño","Sanchís","Neymar","Batistuta","Maradona",
 				"Pelé","Beckenbauer"};
+		
 		Entrenador entrenador = new Entrenador();
 		
 		//Nombre
@@ -211,7 +214,4 @@ public class Principal {
 		
 		return jugadores;
 	}
-
-	
-
 }
