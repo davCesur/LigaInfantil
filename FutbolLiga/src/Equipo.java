@@ -99,7 +99,5 @@ public class Equipo {
 				toStringJugadores(this.jugadores);
 		
 	}
-
-
 }
 
