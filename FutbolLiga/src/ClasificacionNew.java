@@ -20,13 +20,7 @@ public class ClasificacionNew {
 
     /**
      * Constructor para objetos de clasificacion de equipo. Este objeto recoje las estadisticas de la clasificacion de la liga para un equipo.
-     * @param puntos Los puntos del equipo
-     * @param pj Partidos jugados por el equipo
-     * @param pg Partidos ganados por el equipo
-     * @param pe Partidos empatados por el equipo
-     * @param pp Partidos perdidos por el equipo
-     * @param gf Goles a favor del equipo
-     * @param gc Goles en contra del equipo
+     * Este constructor inicializa todas las variables a 0.
      */
     public ClasificacionEquipo()
     {
@@ -39,7 +33,17 @@ public class ClasificacionNew {
         this.golesFavor = 0;
         this.golesContra = 0;
     }
-
+    
+    /**
+     * Constructor para objetos de clasificacion de equipo. Este objeto recoje las estadisticas de la clasificacion de la liga para un equipo.
+     * @param puntos Los puntos del equipo
+     * @param pj Partidos jugados por el equipo
+     * @param pg Partidos ganados por el equipo
+     * @param pe Partidos empatados por el equipo
+     * @param pp Partidos perdidos por el equipo
+     * @param gf Goles a favor del equipo
+     * @param gc Goles en contra del equipo
+     */
     public ClasificacionEquipo(int puntos, int partidosJugados, int partidosGanados, int partidosEmpatados, int partidosPerdidos, int golesFavor, int golesContra)
     {
     	// inicializamos variables
