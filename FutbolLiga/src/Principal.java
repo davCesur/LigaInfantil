@@ -14,8 +14,6 @@ public class Principal {
 		
 		//# Creamos los árbitros
 		liga.setArbitros( crearArbitros() );
-		
-		
 	}
 	
 	private static Equipo[] crearEquipos(int numeroEquipos, int edad) {
@@ -31,7 +29,7 @@ public class Principal {
 		
 		if( numeroEquipos%2!=0 ) {
 			//El número de equipos es impar
-			ui.print("Error: El númeor de equipos a generar es impar");
+			ui.print("Error: El número de equipos a generar es impar");
 			System.exit(1);
 		}
 		
@@ -75,8 +73,11 @@ public class Principal {
 			
 			//Metemos el equipo en el array de equipos
 			listaEquipos[i]=equipo;
+			
+			//Creamos al entrenador
+			Equipo entrenador = new Equipo();
+			entrenador.setEntrenador(crearEntrenador(entrenador));
 		}
-		
 		return listaEquipos;
 	}
 
@@ -115,9 +116,6 @@ public class Principal {
 			arbitro.setLicencia(licencia);
 			
 			arbitros[i] = arbitro;
-			
-			ui.print(arbitro.toString());
-			
 		}
 		return arbitros;
 	}
@@ -134,6 +132,7 @@ public class Principal {
 		String[] apellidos = {"Messi", "Vinicius", "Cristiano", "Ronaldo", "Piqué","Bale (lesionado)",
 				"Amunike","N'kono","Butragueño","Sanchís","Neymar","Batistuta","Maradona",
 				"Pelé","Beckenbauer"};
+		
 		Entrenador entrenador = new Entrenador();
 		
 		//Nombre
@@ -212,7 +211,4 @@ public class Principal {
 		
 		return jugadores;
 	}
-
-	
-
 }
