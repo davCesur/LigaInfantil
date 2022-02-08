@@ -7,8 +7,8 @@ public class Liga {
 	private Arbitro[] arbitros; //array de 3 (principal, linier y asistente)
 	private Clasificacion clasificacion;
 	
-	
 	public Liga() {
+		
 	}
 	
 	public String getNombre() {

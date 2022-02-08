@@ -40,6 +40,7 @@ public class Equipo {
 	public String getEquipacionCasa() {
 		return equipacionCasa;
 	}
+	
 	public void setEquipacionCasa(String equipacionCasa) {
 		this.equipacionCasa = equipacionCasa;
 	}

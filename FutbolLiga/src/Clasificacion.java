@@ -1,4 +1,3 @@
-
 public class Clasificacion {
  
 	/**
@@ -16,13 +15,18 @@ public class Clasificacion {
 	private int golesfavor;  // Numero de goles a favor
 	private int golescontra; // Numero de goles en contra
 	private int puntos;      // Numero de puntos
+	Partido partido = new Partido();
 	
 	public int getVictorias() {
 		
 		
 		return victorias;
 	}
+	
+	
 	public void setVictorias(int victorias) {
+		
+		
 		this.victorias = victorias;
 	}
 	public int getDerrotas() {

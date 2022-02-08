@@ -1,29 +1,80 @@
 import java.util.concurrent.ThreadLocalRandom;
 
-public class Calendario extends Liga { 
-	private String equipoUno ="";
-	private String equipoDos="";
+public class Calendario extends Liga {
 	private String Dia="";
 	
 	/*
-	 * jornada[x][y]
-	 * x => número de jornada
-	 * y => enfrentamientos (Nºequipos/2)
+	 * jornadas[x][y] (Nºequipos/2)
+	 * x => equipo local
+	 * y => equipo visitante 
 	 */
-	private String[][] jornada;
+	private int[][] jornadas;
 	
-	public String getEquipoUno() {
-		return equipoUno;
+	public Calendario() {
+		
+		//Creamos las jornadas
+		
+		
 	}
-	public void setEquipoUno(String equipoUno) {
-		this.equipoUno = equipoUno;
+	
+	
+	public int[][] getJornadas() {
+		return jornadas;
 	}
-	public String getEquipoDos() {
-		return equipoDos;
+	public void setJornadas() {
+		int numeroEquipos;
+		
+				
+		Equipo[] equipos = super.getEquipos();
+		Equipo[][] enfrentamientos= new Equipo[2][equipos.length/2];
+		Jornada[] jornadas = new Jornada[equipos.length -1];
+		
+		/*
+		 * Ejemplo para 8 equipos para sólo ida
+		 *  ????????
+		 *  jornada[0] => equipos[0][0] vs equipos[1][7]
+		 *  jornada[1] => equipos[0][1] vs equipos[1][6]
+		 *  jornada[2] => equipos[0][2] vs equipos[1][5]
+		 *  jornada[3] => equipos[0][3] vs equipos[1][4]
+		 */
+		
+		//mitad izquierda
+		for (int i=0;i<equipos.length/2;i++ ) {
+		    enfrentamientos[0][i]=equipos[i];
+		}
+		//mitad derecha
+		for (int j=equipos.length/2-1;j>=0;j--) {
+		    enfrentamientos[1][j]=equipos[equipos.length-1-j];
+		}
+		
+		//Generamos las jornadas
+		for (int i=0; i<jornadas.length/2;i++) {
+
+		    //Generamos dos arrays de partidos
+		    Partido[] partidosIda = new Partido[enfrentamientos.length];
+		    Partido[] partidosVuelta = new Partido[enfrentamientos.length];
+
+		 
+
+		    for (int j=0; j<enfrentamientos[0].length;j++) {
+		        partidosIda[i].setLocal(enfrentamientos[0][j]);
+		        partidosIda[i].setVisitante(enfrentamientos[1][j]);
+		        
+		        partidosVuelta[i].setLocal(enfrentamientos[1][j]);
+		        partidosVuelta[i].setVisitante(enfrentamientos[0][j]);
+		    }
+		    //Asignamos los partidos a la de ida
+		    jornadas[i].setPartidos(partidosIda);
+		    //Asignamos los partidos a la de vuelta
+		    jornadas[i+jornadas.length-1].setPartidos(partidosVuelta);
+		}
+				
+
+				
+				
+				
 	}
-	public void setEquipoDos(String equipoDos) {
-		this.equipoDos = equipoDos;
-	}
+	
 	public String getDia() {
 		return Dia;
 	}
@@ -31,10 +82,12 @@ public class Calendario extends Liga {
 		this.Dia = Dia;
 	}
 	
+	
+	
 	/**
 	 * Generador de jornadas
 	 * Recibe un número de equipos
-	 * Lo guarda en String jornada[][];
+	 * Lo guarda en String jornada[][]
 	 */
 	public static String[][] generarJornada(int numeroEquipos) {
 		String[][] enfrentamientos = new String [numeroEquipos/2][2];
