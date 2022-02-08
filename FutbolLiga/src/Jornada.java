@@ -2,7 +2,7 @@
 public class Jornada {
 
 	Partido[] partidos;
-	Arbitro[] arbitros = new Arbitro[3]; //Principal, linier y auxiliar
+	Arbitro[] arbitros;
 	String[] horarios;
 	
 	public Jornada() {

@@ -22,16 +22,18 @@ public class Calendario extends Liga {
 		return jornadas;
 	}
 	public void setJornadas() {
-		int numeroEquipos;
-		
 				
 		Equipo[] equipos = super.getEquipos();
-		Equipo[][] enfrentamientos= new Equipo[2][equipos.length/2];
-		Jornada[] jornadas = new Jornada[equipos.length -1];
-		
+		int numeroPartidos = equipos.length/2;
+		int numeroJornadas = equipos.length-1;
+		Equipo[][] enfrentamientos= new Equipo[2][numeroPartidos];
+		Jornada[] jornadas = new Jornada[numeroJornadas];
+
+
+
 		/*
-		 * Ejemplo para 8 equipos para sólo ida
-		 *  ????????
+		 * Ejemplo para 8 equipos para 1 jornada 
+		 * Para las siguiente jornada, giramos los enfrentamientos en sentido contrario a las agujas del reloj
 		 *  jornada[0] => equipos[0][0] vs equipos[1][7]
 		 *  jornada[1] => equipos[0][1] vs equipos[1][6]
 		 *  jornada[2] => equipos[0][2] vs equipos[1][5]
@@ -50,12 +52,12 @@ public class Calendario extends Liga {
 		//Generamos las jornadas
 		for (int i=0; i<jornadas.length/2;i++) {
 
-		    //Generamos dos arrays de partidos
+		    //Generamos dos arrays de partidos (ida y vuelta)
 		    Partido[] partidosIda = new Partido[enfrentamientos.length];
 		    Partido[] partidosVuelta = new Partido[enfrentamientos.length];
 
 		 
-
+		    //Recorremos los enfrentamiientos y los rellenamos (con ida y vuelta)
 		    for (int j=0; j<enfrentamientos[0].length;j++) {
 		        partidosIda[i].setLocal(enfrentamientos[0][j]);
 		        partidosIda[i].setVisitante(enfrentamientos[1][j]);
