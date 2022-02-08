@@ -115,8 +115,10 @@ public class Principal {
 			arbitro.setLicencia(licencia);
 			
 			arbitros[i] = arbitro;
+			
+			ui.print(arbitro.toString());
+			
 		}
-		
 		return arbitros;
 	}
 

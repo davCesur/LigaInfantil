@@ -15,6 +15,8 @@
 
 public class Partido {
 	
+	
+	
 	/**
 	 * Constructor
 	 */
@@ -42,15 +44,24 @@ public class Partido {
 	public Equipo[] getEquipos() {
 		return equipos;
 	}
-
 	public void setEquipos(Equipo[] equipos) {
 		this.equipos = equipos;
 	}
+	
+	public Equipo getLocal() {
+		return this.equipos[0];
+	}
+	public void setLocal(Equipo equipo) {
+		this.equipos[0] = equipo;
+	}
+	
+	public Equipo getVisitante() {
+		return this.equipos[1];
+	}
+	public void setVisitante(Equipo equipo) {
+		this.equipos[1] = equipo;
+	}
 
-	/** pendiente de hacer Jornadas **/
-	/* public Jornadas getJornada() {
-		return jornada;
-	} */
 
 	public int[] getResultado() {
 		return resultado;
