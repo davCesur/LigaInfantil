@@ -50,10 +50,10 @@ public class Clasificacion {
 		this.puntos = puntos;
 	}
 	
-	public String getEquipo() {
+	public Equipo getEquipo() {
 		return equipo;
 	}
-	public void setEquipo(String equipo) {
+	public void setEquipo(Equipo equipo) {
 		this.equipo = equipo;
 	}
 }
