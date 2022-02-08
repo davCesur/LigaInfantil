@@ -14,10 +14,6 @@ public class Principal {
 		
 		//# Creamos los árbitros
 		liga.setArbitros( crearArbitros() );
-		
-		//Creamos al entrenador
-		Equipo entrenador = new Equipo();
-		entrenador.setEntrenador(crearEntrenador(entrenador));
 	}
 	
 	private static Equipo[] crearEquipos(int numeroEquipos, int edad) {
@@ -77,6 +73,10 @@ public class Principal {
 			
 			//Metemos el equipo en el array de equipos
 			listaEquipos[i]=equipo;
+			
+			//Creamos al entrenador
+			Equipo entrenador = new Equipo();
+			entrenador.setEntrenador(crearEntrenador(entrenador));
 		}
 		return listaEquipos;
 	}
@@ -116,9 +116,6 @@ public class Principal {
 			arbitro.setLicencia(licencia);
 			
 			arbitros[i] = arbitro;
-			
-			ui.print(arbitro.toString());
-			
 		}
 		return arbitros;
 	}
@@ -160,7 +157,6 @@ public class Principal {
 		int licencia = (int) Math.floor(Math.random()*100000);
 		entrenador.setNumeroLicencia(licencia);
 		
-		ui.print(entrenador.toString());
 		return entrenador;
 	}
 	
