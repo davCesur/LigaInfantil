@@ -1,3 +1,11 @@
+/**
+ * Gestiona una Liga
+ * 
+ * @author equipo 4 DAW
+ *
+ */
+
+package liga;
 
 public class Liga {
 	

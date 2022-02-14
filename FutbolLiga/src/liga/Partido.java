@@ -1,4 +1,3 @@
-
 /**
  * ######### PENDIENTE DE JORNADA
  */
@@ -11,7 +10,12 @@
  * Genera:
  *  3 árbitros
  *  resultado
+ *  
+ *  @author miguel
+ *  
  */
+
+package liga;
 
 public class Partido {
 	

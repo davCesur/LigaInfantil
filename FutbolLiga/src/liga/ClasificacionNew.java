@@ -1,3 +1,5 @@
+package liga;
+
 public class ClasificacionNew {
     // Puntos que tiene el equipo
     private int puntos;
@@ -22,7 +24,7 @@ public class ClasificacionNew {
      * Constructor para objetos de clasificacion de equipo. Este objeto recoje las estadisticas de la clasificacion de la liga para un equipo.
      * Este constructor inicializa todas las variables a 0.
      */
-    public ClasificacionEquipo()
+    public ClasificacionNew()
     {
         // inicializamos variables
         this.puntos = puntos;
@@ -44,7 +46,7 @@ public class ClasificacionNew {
      * @param gf Goles a favor del equipo
      * @param gc Goles en contra del equipo
      */
-    public ClasificacionEquipo(int puntos, int partidosJugados, int partidosGanados, int partidosEmpatados, int partidosPerdidos, int golesFavor, int golesContra)
+    public ClasificacionNew(int puntos, int partidosJugados, int partidosGanados, int partidosEmpatados, int partidosPerdidos, int golesFavor, int golesContra)
     {
     	// inicializamos variables
         this.puntos = puntos;
@@ -60,7 +62,7 @@ public class ClasificacionNew {
      * Suma las estadisticas pasadas como parametro a este objeto clasificacion.
      * @param sumaEstadisticas Estadisticas a sumar a este objeto.
      */
-    public void sumaEstadisticas(ClasificacionEquipo sumaEstadisticas)
+    public void sumaEstadisticas(ClasificacionNew sumaEstadisticas)
     {
         puntos += sumaEstadisticas.getPuntos();
         partidosJugados += sumaEstadisticas.getPartidosJugados();

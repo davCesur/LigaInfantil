@@ -1,3 +1,12 @@
+/**
+ * Objeto persona
+ * 
+ * @author equipo 4 DAW
+ *
+ */
+
+package liga;
+
 public abstract class Persona {
 	private String nombre;
 	private String apellidos;

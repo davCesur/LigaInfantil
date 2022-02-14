@@ -1,3 +1,10 @@
+/**
+ * Extiende Persona con propiedades específicas de Entrenador
+ *
+ * @author equipo 4 DAW
+ */
+
+package liga;
 
 public class Entrenador extends Persona{
 	

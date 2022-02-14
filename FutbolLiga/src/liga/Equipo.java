@@ -1,3 +1,11 @@
+/**
+ * Gestiona un equipo
+ * 
+ * @author equipo 4 DAW
+ *
+ */
+
+package liga;
 
 public class Equipo {
 	private String nombre;

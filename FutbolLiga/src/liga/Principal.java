@@ -1,3 +1,11 @@
+/**
+ * 
+ * @author equipo 4 DAW
+ *
+ */
+
+package liga;
+
 public class Principal {
 
 	public static void main(String[] args) {

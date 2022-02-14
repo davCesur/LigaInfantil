@@ -1,3 +1,12 @@
+/**
+ * Genera un calendario
+ * 
+ * @author equipo 4 DAW
+ *
+ */
+
+package liga;
+
 import java.util.concurrent.ThreadLocalRandom;
 
 public class Calendario extends Liga {
@@ -8,7 +17,7 @@ public class Calendario extends Liga {
 	 * x => equipo local
 	 * y => equipo visitante 
 	 */
-	private int[][] jornadas;
+	private Jornada[] jornadas;
 	
 	public Calendario() {
 		
@@ -18,16 +27,17 @@ public class Calendario extends Liga {
 	}
 	
 	
-	public int[][] getJornadas() {
+	public Jornada[] getJornadas() {
 		return jornadas;
 	}
+	
 	public void setJornadas() {
 				
 		Equipo[] equipos = super.getEquipos();
 		int numeroPartidos = equipos.length/2;
 		int numeroJornadas = equipos.length-1;
 		Equipo[][] enfrentamientos= new Equipo[2][numeroPartidos];
-		Jornada[] jornadas = new Jornada[numeroJornadas];
+		jornadas = new Jornada[numeroJornadas];
 
 
 

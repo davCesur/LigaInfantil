@@ -1,3 +1,11 @@
+/**
+ * Gestiona las clasificaciones de los equipos
+ * 
+ * @author equipo 4 DAW
+ *
+ */
+
+package liga;
 
 public class EquipoClasificacion {
 	private Equipo equipo;

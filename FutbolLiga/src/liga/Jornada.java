@@ -1,3 +1,11 @@
+/**
+ * Genera una jornada completa
+ * 
+ * @author equipo 4 DAW
+ *
+ */
+
+package liga;
 
 public class Jornada {
 

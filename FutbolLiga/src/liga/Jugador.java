@@ -1,3 +1,11 @@
+/**
+ * Extiende Persona con propiedades específicas de Jugador
+ * 
+ * @author equipo 4 DAW
+ *
+ */
+
+package liga;
 
 public final class Jugador extends Persona{
 	private String categoria;

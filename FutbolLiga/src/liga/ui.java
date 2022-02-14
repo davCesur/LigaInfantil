@@ -1,10 +1,13 @@
-import java.util.Scanner;
-
 /**
  * User Interface 
  * @author equipo 4
  *
  */
+
+package liga;
+
+import java.util.Scanner;
+
 public class ui {
 
 	/**

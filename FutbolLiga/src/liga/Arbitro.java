@@ -1,3 +1,10 @@
+/**
+ * Extiende Persona con propiedades específicas de árbitro
+ *
+ * @author equipo 4 DAW
+ */
+
+package liga;
 
 public class Arbitro extends Persona {
 	int licencia;
