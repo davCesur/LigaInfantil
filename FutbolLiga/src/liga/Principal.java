@@ -9,8 +9,6 @@ package liga;
 public class Principal {
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-		
 
 		Liga liga = new Liga();
 		liga.setNombre("Liga Equipo 4");
