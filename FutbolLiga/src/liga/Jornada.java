@@ -1,21 +1,11 @@
-/**
- * Genera una jornada completa
- * 
- * @author equipo 4 DAW
- *
- */
 
 package liga;
 
-public class Jornada {
+import java.util.Arrays;
 
-	Partido[] partidos;
-	Arbitro[] arbitros;
-	String[] horarios;
-	
-	public Jornada() {
-		// TODO Auto-generated constructor stub
-	}
+public class Jornada {
+	private Partido[] partidos;
+	private boolean terminada=false;
 
 	public Partido[] getPartidos() {
 		return partidos;
@@ -24,23 +14,29 @@ public class Jornada {
 	public void setPartidos(Partido[] partidos) {
 		this.partidos = partidos;
 	}
-
-	public Arbitro[] getArbitros() {
-		return arbitros;
-	}
-
-	public void setArbitros(Arbitro[] arbitros) {
-		this.arbitros = arbitros;
-	}
-
-	public String[] getHorarios() {
-		return horarios;
-	}
-
-	public void setHorarios(String[] horarios) {
-		this.horarios = horarios;
-	}
 	
 	
 
+	public boolean isTerminada() {
+		return terminada;
+	}
+
+	public void setTerminada(boolean terminada) {
+		this.terminada = terminada;
+	}
+	
+	public void terminar() {
+		this.terminada=true;
+	}
+
+	@Override
+	public String toString() {
+		String cadena = "Jornada: \n";
+		for (int i=0;i<this.partidos.length;i++)
+		{
+			cadena+=this.partidos[i];
+		}
+
+		return cadena;
+	}
 }

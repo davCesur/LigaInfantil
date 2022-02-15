@@ -1,9 +1,3 @@
-/**
- * Objeto persona
- * 
- * @author equipo 4 DAW
- *
- */
 
 package liga;
 
@@ -11,6 +5,7 @@ public abstract class Persona {
 	private String nombre;
 	private String apellidos;
 	private int edad;
+	
 	
 	public String getNombre() {
 		return nombre;
@@ -33,9 +28,9 @@ public abstract class Persona {
 	
 	@Override
 	public String toString() {
-		return "Nombre: "+ this.nombre+" "+this.apellidos+"\n"+
-				"Edad: "+this.edad;
+		
+		return "Nombre: "+nombre+" "+apellidos+"\n"+
+				"Edad: "+edad+"\n";
 		
 	}
-
 }

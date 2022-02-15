@@ -1,119 +1,92 @@
-/**
- * Genera un calendario
- * 
- * @author equipo 4 DAW
- *
- */
 
 package liga;
 
-import java.util.concurrent.ThreadLocalRandom;
+import java.util.Arrays;
 
-public class Calendario extends Liga {
-	private String Dia="";
-	
-	/*
-	 * jornadas[x][y] (Nºequipos/2)
-	 * x => equipo local
-	 * y => equipo visitante 
-	 */
+public class Calendario {
 	private Jornada[] jornadas;
-	
-	public Calendario() {
+
+	public Calendario(Equipo[] equipos, Arbitro[] arbitros) {
+		int numeroEquipos = equipos.length;
+		int numeroJornadas = (numeroEquipos-1)*2;
+		int numeroPartidos = numeroEquipos/2;
 		
-		//Creamos las jornadas
+		jornadas= new Jornada[numeroJornadas];
+		Equipo[][] emparejamientos = new Equipo[2][numeroPartidos];
+		//Mitad izquierda del array doble
+		for (int i=0;i<numeroPartidos;i++) {
+			emparejamientos[0][i]=equipos[i];
+		}
+		//Mitad derecha del array doble
+		for (int j=numeroPartidos-1;j>=0;j--) {
+			emparejamientos[1][j]=equipos[numeroEquipos-1-j];
+		}
 		
-		
+		for (int i=0; i<numeroJornadas/2; i++) {
+			
+			Partido[] partidosIda = new Partido[numeroPartidos];
+			Partido[] partidosVuelta =  new Partido[numeroPartidos];
+			
+			for (int j=0; j<numeroPartidos;j++) {
+				//Partidos de ida
+				partidosIda[j] = new Partido();
+				partidosIda[j].setLocal(emparejamientos[0][j]);
+				partidosIda[j].setVisitante(emparejamientos[1][j]);
+				partidosIda[j].setArbitro(arbitros[j]);
+				//Partidos de vuelta
+				partidosVuelta[j] = new Partido();
+				partidosVuelta[j].setLocal(emparejamientos[1][j]);
+				partidosVuelta[j].setVisitante(emparejamientos[0][j]);
+				partidosVuelta[j].setArbitro(arbitros[j]);
+				
+			}
+			//Actualizamos jornadas
+			jornadas[i] =  new Jornada();
+			jornadas[i].setPartidos(partidosIda);
+			jornadas[numeroJornadas-1-i] =  new Jornada();
+			jornadas[numeroJornadas-1-i].setPartidos(partidosVuelta);
+			
+			//Rotamos el array doble
+			Equipo[][] auxEmp = new Equipo[2][numeroPartidos];
+			//Actualizamos columna izquierda
+			for (int k=0;k<numeroPartidos;k++) {
+				if (k==0) {
+					auxEmp[0][k]=emparejamientos[0][k];
+				}else if(k>0 && k<numeroPartidos-1) {
+					auxEmp[0][k+1]=emparejamientos[0][k];
+				}else {
+					auxEmp[1][k]=emparejamientos[0][k];
+				}
+			}
+			//Columna Derecha
+			for (int k=0;k<numeroPartidos;k++) {
+				if (k>0 && k<numeroPartidos) {
+					auxEmp[1][k-1]=emparejamientos[1][k];
+				}else {
+					auxEmp[0][1]=emparejamientos[1][k];
+				}
+			}
+			emparejamientos=auxEmp;
+		}
 	}
-	
-	
+
 	public Jornada[] getJornadas() {
 		return jornadas;
 	}
-	
-	public void setJornadas() {
-				
-		Equipo[] equipos = super.getEquipos();
-		int numeroPartidos = equipos.length/2;
-		int numeroJornadas = equipos.length-1;
-		Equipo[][] enfrentamientos= new Equipo[2][numeroPartidos];
-		jornadas = new Jornada[numeroJornadas];
 
+	public void setJornadas(Jornada[] jornadas) {
+		this.jornadas = jornadas;
+	}
 
-
-		/*
-		 * Ejemplo para 8 equipos para 1 jornada 
-		 * Para las siguiente jornada, giramos los enfrentamientos en sentido contrario a las agujas del reloj
-		 *  jornada[0] => equipos[0][0] vs equipos[1][7]
-		 *  jornada[1] => equipos[0][1] vs equipos[1][6]
-		 *  jornada[2] => equipos[0][2] vs equipos[1][5]
-		 *  jornada[3] => equipos[0][3] vs equipos[1][4]
-		 */
-		
-		//mitad izquierda
-		for (int i=0;i<equipos.length/2;i++ ) {
-		    enfrentamientos[0][i]=equipos[i];
-		}
-		//mitad derecha
-		for (int j=equipos.length/2-1;j>=0;j--) {
-		    enfrentamientos[1][j]=equipos[equipos.length-1-j];
+	@Override
+	public String toString() {
+		String cadena = "Calendario de Liga: \n";
+		for (int i=0;i<this.jornadas.length;i++)
+		{
+			cadena+=(i+1)+"Âª "+this.jornadas[i]+"\n";
 		}
 		
-		//Generamos las jornadas
-		for (int i=0; i<jornadas.length/2;i++) {
-
-		    //Generamos dos arrays de partidos (ida y vuelta)
-		    Partido[] partidosIda = new Partido[enfrentamientos.length];
-		    Partido[] partidosVuelta = new Partido[enfrentamientos.length];
-
-		 
-		    //Recorremos los enfrentamiientos y los rellenamos (con ida y vuelta)
-		    for (int j=0; j<enfrentamientos[0].length;j++) {
-		        partidosIda[i].setLocal(enfrentamientos[0][j]);
-		        partidosIda[i].setVisitante(enfrentamientos[1][j]);
-		        
-		        partidosVuelta[i].setLocal(enfrentamientos[1][j]);
-		        partidosVuelta[i].setVisitante(enfrentamientos[0][j]);
-		    }
-		    //Asignamos los partidos a la de ida
-		    jornadas[i].setPartidos(partidosIda);
-		    //Asignamos los partidos a la de vuelta
-		    jornadas[i+jornadas.length-1].setPartidos(partidosVuelta);
-		}
-				
-
-				
-				
-				
+		return cadena;
 	}
-	
-	public String getDia() {
-		return Dia;
-	}
-	public void setDia(String Dia) {
-		this.Dia = Dia;
-	}
-	
-	
-	
-	/**
-	 * Generador de jornadas
-	 * Recibe un número de equipos
-	 * Lo guarda en String jornada[][]
-	 */
-	public static String[][] generarJornada(int numeroEquipos) {
-		String[][] enfrentamientos = new String [numeroEquipos/2][2];
-		
-		Equipo e = new Equipo();
-		for (int i=0;i<numeroEquipos/2;i++) { 
-			for (int j=0;j<2;j++) {
-				enfrentamientos [i][j] = e.getClub();
-				System.out.println(enfrentamientos[i][j]);
-			}
-		}
-		return enfrentamientos;
-	}
-		
-
 	
 }
