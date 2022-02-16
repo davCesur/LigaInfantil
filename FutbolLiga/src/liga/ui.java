@@ -23,6 +23,16 @@ public class ui {
 	public static void main(String[] args) {
 	}
 	
+	/**
+	 * Clear console printing 200 new lines
+	 */
+	public static void cleanConsole() {
+		for( int i=0 ; i<200 ; i++ ) {
+			System.out.println();
+		}
+	}
+
+
 	public static void print(String texto) {
 		System.out.println(texto);
 	}

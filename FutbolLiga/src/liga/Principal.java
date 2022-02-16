@@ -10,6 +10,10 @@ public class Principal {
 		final String NOMBRELIGA="La SuperLiga";
 		final int JORNADASJUGADAS = 15;
 		
+		menu();
+		System.exit(0);
+		
+		
 		Equipo[] misEquipos = crearListaEquipos(NUMEROEQUIPOS, EDAD);
 		Arbitro[] arbitros = new Arbitro[NUMEROEQUIPOS/2]; 
 		for (int i=0;i<arbitros.length;i++) {
@@ -196,5 +200,117 @@ public class Principal {
 		}
 		
 	}
+	
+	/**
+	 * Show menu and wait for a valid option
+	 *  Get: Array whit elements in format {
+	 *   {"option1", "title", "function to execute"},
+	 *   {"option2", "title", "function to execute"} }
+	 *  Return: valid option of array parsed
+	 */
+	private static void menu() {
+
+		String[][] elements = {
+				{"1","1  - Operaciones matemáticas"},
+				{"2","2  - Serie de Fibonacci"},
+				{"9","9  - Pasar vocales a mayúsculas\n"
+				+"       y consonantes a minúsculas"},
+				{"11","11 - Extractor de vocales"},
+				{"",""},
+				{"","Cambiar velocidad de animaciones:"},
+				{"N","    N - Normal"},
+				{"D","    D - Desactivado (Disabled)"},
+				{"",""},
+				{"0","0 - Salir"},
+				{"",""}
+		};
+
+		ui.cleanConsole();
+		printMenu(elements);
+
+		//Save valid options for check later
+		String[] validOptions = new String[0];
+		for( String[] element:elements ) {
+			if( element[0]!="" ) { //Exclude elements without option (information only) 
+				String elementTmp[] = new String[validOptions.length+1];
+				System.arraycopy(validOptions, 0, elementTmp, 0, validOptions.length);
+				elementTmp[elementTmp.length-1] = element[0];
+				validOptions = elementTmp;
+			}
+		}
+
+		ui.print("Introduzca una opción: ");
+		String option;
+		int forClean=0;
+		while( ( option = ui.readWhitOptions(validOptions) ).isEmpty() ) {
+			System.out.print("Opción incorrecta. Introduzca una opción: ");	
+			forClean++;
+			if( forClean%10 == 0) { //Clean console and show menu again after 10 errors
+				ui.cleanConsole();
+				printMenu(elements);
+				ui.print("Introduzca una opción: ");
+			}
+		}
+
+		switch( option.toUpperCase() ) {
+		case "1":
+		case "N":
+			printMenuCabecera("Operaciones matemáticas");
+			// aquí el método. ej: operacionesMatematicas();
+			break;
+		case "0":
+			ui.print("\nSaliendo... ¡Hasta otra amigo!\n\n");
+			System.exit(0);
+		}
+
+		//System.out.println("despues de switch");
+		//MyUtils.readKeyboard();
+
+		menu();
+
+	}
+	/**
+	 * Imprime por salida estándar el menú principal
+	 */
+	private static void printMenu(String[][] elements) {
+		printMenuCabecera("GENERADOR DE LIGAS");
+		ui.print("          Seleccione una opción\n");
+		ui.print("\n");
+
+		//Print elements
+		for( String[] element:elements ) {
+			ui.print("  "+element[1]+"\n");
+		}
+	}
+	/**
+	 * Imprime la cabecera para cada sección
+	 */
+	private static void printMenuCabecera(String texto) {
+		int longitudLinea=50;
+		String linea="\n";
+		String out = "";
+		
+		//out += "*****************************************\n";
+		int asteriscos=( longitudLinea-texto.length() )/2;
+		for( int i=1 ; i<=asteriscos-1 ; i++) {
+			out+="*";
+		}
+		out+=" "+texto+" ";
+		for( int i=1 ; i<=asteriscos-1 ; i++) {
+			out+="*";
+		}
+		
+		for( int i=1 ; i<=out.length() ; i++) {
+			linea+="*";
+		}
+		linea+="\n";
+		
+		out = "\n"+linea+out+linea+"\n";
+		ui.print(out);
+		
+	}
+
+
+
 
 }
