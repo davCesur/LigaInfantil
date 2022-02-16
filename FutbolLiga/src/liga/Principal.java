@@ -10,17 +10,21 @@ public class Principal {
 		final String NOMBRELIGA="La SuperLiga";
 		final int JORNADASJUGADAS = 15;
 		
-		menu();
-		System.exit(0);
+		//menu();
+		//System.exit(0);
 		
 		
 		Equipo[] misEquipos = crearListaEquipos(NUMEROEQUIPOS, EDAD);
 		Arbitro[] arbitros = new Arbitro[NUMEROEQUIPOS/2]; 
+		Arbitro[] liniers = new Arbitro[NUMEROEQUIPOS/2];
+		Arbitro[] asistentes = new Arbitro[NUMEROEQUIPOS/2];
 		for (int i=0;i<arbitros.length;i++) {
 			arbitros[i]= crearArbitro();
+			liniers[i]= crearArbitro();
+			asistentes[i]= crearArbitro();
 		}
 		
-		Liga miLiga = new Liga(NOMBRELIGA,misEquipos,arbitros);
+		Liga miLiga = new Liga(NOMBRELIGA,misEquipos,arbitros,liniers,asistentes);
 		System.out.println(miLiga.getCalendario());
 		Calendario miCalendario=miLiga.getCalendario();
 		generarPartidos(miCalendario,JORNADASJUGADAS);
@@ -172,10 +176,10 @@ public class Principal {
 		int edad = (int) Math.floor((Math.random())*48)+18;
 		//Licencia
 		int licencia = (int) Math.floor((Math.random())*900000)+100000;
-		arbitro.setNombre(nombre);
-		arbitro.setApellidos(apellido);
-		arbitro.setEdad(edad);
-		arbitro.setLicencia(licencia);
+			arbitro.setNombre(nombre);
+			arbitro.setApellidos(apellido);
+			arbitro.setEdad(edad);
+			arbitro.setLicencia(licencia);
 		
 		return arbitro;
 	}

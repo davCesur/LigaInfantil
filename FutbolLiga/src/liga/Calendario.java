@@ -6,7 +6,7 @@ import java.util.Arrays;
 public class Calendario {
 	private Jornada[] jornadas;
 
-	public Calendario(Equipo[] equipos, Arbitro[] arbitros) {
+	public Calendario(Equipo[] equipos, Arbitro[] arbitros, Arbitro[] liniers, Arbitro[] asistentes) {
 		int numeroEquipos = equipos.length;
 		int numeroJornadas = (numeroEquipos-1)*2;
 		int numeroPartidos = numeroEquipos/2;
@@ -33,12 +33,21 @@ public class Calendario {
 				partidosIda[j].setLocal(emparejamientos[0][j]);
 				partidosIda[j].setVisitante(emparejamientos[1][j]);
 				partidosIda[j].setArbitro(arbitros[j]);
-				//Partidos de vuelta
-				partidosVuelta[j] = new Partido();
-				partidosVuelta[j].setLocal(emparejamientos[1][j]);
-				partidosVuelta[j].setVisitante(emparejamientos[0][j]);
-				partidosVuelta[j].setArbitro(arbitros[j]);
-				
+				partidosIda[j].setLinier(liniers[j]);
+				if (!partidosIda[j].getArbitro().equals(partidosIda[j].getLinier())) { //Si Arbitro es distinto de Linier
+					partidosIda[j].setAsistente(asistentes[j]); //Generamos Asistente
+				}
+				if (!partidosIda[j].getArbitro().equals(partidosIda[j].getAsistente()) //Si Arbitro es distinto de Asistente
+				&& !partidosIda[j].getLinier().equals(partidosIda[j].getAsistente())) { // Y linier es distinto de Asistente
+					//Generamos partidos de vuelta
+					//Partidos de vuelta
+					partidosVuelta[j] = new Partido();
+					partidosVuelta[j].setLocal(emparejamientos[1][j]);
+					partidosVuelta[j].setVisitante(emparejamientos[0][j]);
+					partidosVuelta[j].setArbitro(arbitros[j]);
+					partidosVuelta[j].setLinier(liniers[j]);
+					partidosVuelta[j].setAsistente(asistentes[j]);			
+				}
 			}
 			//Actualizamos jornadas
 			jornadas[i] =  new Jornada();
