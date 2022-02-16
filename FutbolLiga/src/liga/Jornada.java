@@ -1,8 +1,6 @@
 
 package liga;
 
-import java.util.Arrays;
-
 public class Jornada {
 	private Partido[] partidos;
 	private boolean terminada=false;
