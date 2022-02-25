@@ -6,8 +6,6 @@
 
 package utils;
 
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
 import java.util.Scanner;
 
 public class ui {
@@ -48,7 +46,9 @@ public class ui {
 	 */
 	public static String readKeyboard() {
 		Scanner sc = new Scanner(System.in);
-		return sc.nextLine();
+		String retorno = sc.nextLine();
+		sc.close();
+		return retorno;
 	}
 
 	/**
@@ -58,7 +58,9 @@ public class ui {
 	public static String readKeyboard(String mensaje) {
 		print(mensaje);
 		Scanner sc = new Scanner(System.in);
-		return sc.nextLine();
+		String retorno = sc.nextLine();
+		sc.close();
+		return retorno;
 	}
 
 	/**
@@ -77,7 +79,8 @@ public class ui {
 			print("No ha introducido ningún valor.\n"+mensaje);
 			input = sc.nextLine();
 		}
-
+		
+		sc.close();
 		return input;
 	}
 
@@ -108,6 +111,7 @@ public class ui {
 				input = sc.nextLine();
 			}
 		}
+		sc.close();
 		return output;
 	}
 	public static int readKeyboardInt() {
@@ -141,6 +145,7 @@ public class ui {
 				input = sc.nextLine();
 			}
 		}
+		sc.close();
 		return output;
 	}
 
@@ -172,6 +177,7 @@ public class ui {
 				input = sc.nextLine();
 			}
 		}
+		sc.close();
 
 		if( decimals > 0) {
 			return (double)(Math.round(output*Math.pow(10,decimals)))/(Math.pow(10,decimals));
