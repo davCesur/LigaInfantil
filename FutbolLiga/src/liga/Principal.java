@@ -1,33 +1,57 @@
 
 package liga;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+
+import utils.ui;
+import utils.datos;
 
 public class Principal {
 
+	private static  int numeroEquipos = 20;
+	private static  int edadLiga=12;
+	private static  String nombreLiga="La SuperLiga";
+	private static  int jornadasJugadas = 15;
+
+	private static Equipo[] equipos;
+	private static Arbitro[] arbitros;
+	private static Liga liga;
+	private static Calendario calendario;
+	private static Clasificacion clasificacion;
+
 	public static void main(String[] args) {
-		final int NUMEROEQUIPOS = 20;
-		final int EDAD=12;
-		final String NOMBRELIGA="La SuperLiga";
-		final int JORNADASJUGADAS = 15;
 		
 		menu();
 		System.exit(0);
 		
+	}
+	
+	private static void crearLiga() {
 		
-		Equipo[] misEquipos = crearListaEquipos(NUMEROEQUIPOS, EDAD);
-		Arbitro[] arbitros = new Arbitro[NUMEROEQUIPOS/2]; 
+		int cantidadEquipos=2;
+		while( cantidadEquipos %2 !=0 | cantidadEquipos < 4 | cantidadEquipos > 40 ) {
+			cantidadEquipos = ui.readKeyboardInt("Introduzca un número de equipos (par entre 4 y 40): ");
+		}
+		
+		numeroEquipos = cantidadEquipos;
+		
+		equipos = crearListaEquipos(numeroEquipos, edadLiga);
+		arbitros = new Arbitro[numeroEquipos/2]; 
 		for (int i=0;i<arbitros.length;i++) {
 			arbitros[i]= crearArbitro();
 		}
 		
-		Liga miLiga = new Liga(NOMBRELIGA,misEquipos,arbitros);
-		System.out.println(miLiga.getCalendario());
-		Calendario miCalendario=miLiga.getCalendario();
-		generarPartidos(miCalendario,JORNADASJUGADAS);
+		liga = new Liga(nombreLiga,equipos,arbitros);
+		calendario = liga.getCalendario();
+		generarPartidos(calendario,jornadasJugadas);
+		clasificacion = new Clasificacion(equipos,calendario);
 		
-		
-		Clasificacion clasificacion = new Clasificacion(misEquipos,miCalendario);
-		System.out.println(clasificacion);
+		ui.print( "Liga creada automáticamente con "+" equipos\n"
+				+ "Pulse enter para volver");
+		ui.readKeyboard();
+
+
 	}
 
 	private static Jugador[] crearListaJugadores(int numeroJugadores, int edad, Equipo equipo) {
@@ -73,7 +97,6 @@ public class Principal {
 		}
 		return listaJugadores;
 	}
-
 	
 	private static Equipo[] crearListaEquipos(int numeroEquipos, int edad) {
 		String[]  barrios = {"El Perchel", "La Victoria", "El Rincon de la Victoria",
@@ -187,43 +210,177 @@ public class Principal {
 		int totalJornadas = jornadas.length;
 		
 		for (int i=0; i<numeroJornadas && i<totalJornadas; i++) {
-			System.out.println("Jornada: "+(i+1));
+//System.out.println("Jornada: "+(i+1));
 			Partido[] partidos = jornadas[i].getPartidos();
 			for (Partido par: partidos) {
 				int golesLocales = (int)Math.floor((Math.random())*MAXGOLES);
 				int golesVisitantes = (int)Math.floor((Math.random())*MAXGOLES);
 				par.setgLocal(golesLocales);
 				par.setgVisitante(golesVisitantes);
-				System.out.println(par);
+//System.out.println(par);
 			}
 			jornadas[i].terminar();
 		}
 		
 	}
 	
+	
 	/**
-	 * Show menu and wait for a valid option
-	 *  Get: Array whit elements in format {
-	 *   {"option1", "title", "function to execute"},
-	 *   {"option2", "title", "function to execute"} }
-	 *  Return: valid option of array parsed
+	 * Mostramos el ménu pricipal
 	 */
 	private static void menu() {
 
 		String[][] elements = {
-				{"1","1  - Operaciones matemáticas"},
-				{"2","2  - Serie de Fibonacci"},
-				{"9","9  - Pasar vocales a mayúsculas\n"
-				+"       y consonantes a minúsculas"},
-				{"11","11 - Extractor de vocales"},
-				{"",""},
-				{"","Cambiar velocidad de animaciones:"},
-				{"N","    N - Normal"},
-				{"D","    D - Desactivado (Disabled)"},
-				{"",""},
-				{"0","0 - Salir"},
-				{"",""}
+				{"1","1 - Crear Liga","crearLiga"},
+				{"2","2 - Editar Liga","menuEditarLiga"},
+				{"3","3 - Ver la clasificación","mostrarClasificacion"},
+				{"4","4 - Ver calendario","mostrarCalendario"},
+				{"5","5 - Guardar clasificación en archivo","guardarClasificacion"},
+				{"6","6 - Guardar calendario en archivo","guardarCalendario"},
+				{"","",""},
+				{"0","0 - Salir","noRepetir"},
+				{"","",""}
 		};
+		
+		menu(elements);
+	}
+	
+	/**
+	 * Mostramos el ménu de Editar Liga
+	 */
+	private static void menuEditarLiga() {
+
+		String[][] elements = {
+				{"1","1 - Modificar el número de equipos","modificarNumeroEquipos"},
+				{"","",""},
+				{"0","0 - Volver","noRepetir"},
+				{"","",""}
+		};
+
+		menu(elements);
+	}
+	
+	
+	private static void mostrarClasificacion() {
+		
+		ui.print(clasificacion.toString());
+		
+		ui.print("Pulse enter para volver");
+		ui.readKeyboard();
+	}
+	
+	
+	private static void guardarClasificacion() {
+		
+		if( checkLiga("No ha creado ninguna liga.\nCree una liga con la opción 1.") ) {
+			
+			String nombreArchivo = "Clasificacion.txt";
+			
+			ui.print("Ruta donde se guardará el archivo: " + datos.path() + "/");
+			ui.print("Nombre de archivo por defecto: "+nombreArchivo);
+			ui.print("Introduzca un nombre de archivo distinto (déjelo en blanco si no desea cambiarlo): ");
+			String leerNombreArchivo = ui.readKeyboard();
+			if( !leerNombreArchivo.equals("") ) {
+				nombreArchivo = leerNombreArchivo;
+			}
+			
+			ui.print("Se va a guardar en: "+datos.path()+"/"+nombreArchivo);
+			
+			if( datos.escribirArchivo(nombreArchivo, clasificacion.toString()) ) {
+				ui.print("Datos guardados correctamente.");
+			} else {
+				ui.print("Error al guardar los datos. Inténtelo de nuevo con otro nombre o ruta.");
+			}
+		}
+		
+		ui.print("Pulse enter para volver");
+		ui.readKeyboard();
+	}
+	
+	
+	private static void mostrarCalendario() {
+		
+		ui.print(liga.getCalendario().toString());
+		
+		ui.print("Pulse enter para volver");
+		ui.readKeyboard();
+	}
+	
+	private static void guardarCalendario() {
+		
+		if( checkLiga("No ha creado ninguna liga.\nCree una liga con la opción 1.") ) {
+			
+			String nombreArchivo = "Calendario.txt";
+			
+			ui.print("Ruta donde se guardará el archivo: " + datos.path() + "/");
+			ui.print("Nombre de archivo por defecto: "+nombreArchivo);
+			ui.print("Introduzca un nombre de archivo distinto (déjelo en blanco si no desea cambiarlo): ");
+			String leerNombreArchivo = ui.readKeyboard();
+			if( !leerNombreArchivo.equals("") ) {
+				nombreArchivo = leerNombreArchivo;
+			}
+			
+			ui.print("Se va a guardar en: "+datos.path()+"/"+nombreArchivo);
+			
+			if( datos.escribirArchivo(nombreArchivo, liga.getCalendario().toString()) ) {
+				ui.print("Datos guardados correctamente.");
+			} else {
+				ui.print("Error al guardar los datos. Inténtelo de nuevo con otro nombre o ruta.");
+			}
+		}
+		
+		ui.print("Pulse enter para volver");
+		ui.readKeyboard();
+	}
+	
+	
+
+	/** 
+	 * Comprueba si se ha creado la liga
+	 */
+	private static boolean checkLiga(String errorMensaje) {
+		if( liga == null ) {
+			ui.print(errorMensaje);
+			return false;
+		} else {
+			return true;
+		}
+			
+	}
+	
+	/** 
+	 * Comprueba si se ha creado la liga
+	 */
+	private static boolean checkLiga() {
+		if( liga == null ) {
+			return false;
+		} else {
+			return true;
+		}
+			
+	}
+	
+	/**
+	 * Imprime por salida estándar en formato menu
+	 * @param String[][] elementos del menu
+	 */
+	private static void printMenu(String[][] elements) {
+		ui.printCabecera("GENERADOR DE LIGAS");
+		ui.print("          Seleccione una opción\n");
+		ui.print("\n");
+
+		//Print elements
+		for( String[] element:elements ) {
+			ui.print("  "+element[1]+"\n");
+		}
+	}
+
+	
+	/**
+	 * Muestra un menú según el array 
+	 * para mostrar el menú inicial
+	 */
+	public static void menu(String[][] elements) {
 
 		ui.cleanConsole();
 		printMenu(elements);
@@ -252,63 +409,57 @@ public class Principal {
 			}
 		}
 
-		switch( option.toUpperCase() ) {
-		case "1":
-		case "N":
-			printMenuCabecera("Operaciones matemáticas");
-			// aquí el método. ej: operacionesMatematicas();
-			break;
-		case "0":
-			ui.print("\nSaliendo... ¡Hasta otra amigo!\n\n");
-			System.exit(0);
-		}
-
-		//System.out.println("despues de switch");
-		//MyUtils.readKeyboard();
-
-		menu();
-
-	}
-	/**
-	 * Imprime por salida estándar el menú principal
-	 */
-	private static void printMenu(String[][] elements) {
-		printMenuCabecera("GENERADOR DE LIGAS");
-		ui.print("          Seleccione una opción\n");
-		ui.print("\n");
-
-		//Print elements
+		//Buscamos el elemento en elements y lo ejecutamos con lanzador
+		boolean repetirMenu = true;
 		for( String[] element:elements ) {
-			ui.print("  "+element[1]+"\n");
+			if( !element[0].equals("") ) { //Exclude elementos sin opción seleccionable
+				if( option.equals(element[0]) ) { //si hemos encontrado la selección, ejecutamos el método
+					if( element[2].equals("noRepetir") ) {
+						repetirMenu=false;
+					} else {
+						lanzador(element[2]);
+					}
+					break;
+				}
+			}
 		}
+		
+		if( repetirMenu ) {
+			menu(elements);
+		}
+
 	}
+	
 	/**
-	 * Imprime la cabecera para cada sección
+	 * Ejecuta el método method'metodo'
+	 * donde metodo es el nombre restante del método a ejecutar
+	 * ej: lanzador('Hola') ejecuta el método methodHola()
+	 * @param metodo
 	 */
-	private static void printMenuCabecera(String texto) {
-		int longitudLinea=50;
-		String linea="\n";
-		String out = "";
-		
-		//out += "*****************************************\n";
-		int asteriscos=( longitudLinea-texto.length() )/2;
-		for( int i=1 ; i<=asteriscos-1 ; i++) {
-			out+="*";
+	public static void lanzador(String metodo) {
+		try {
+			Method method = Principal.class.getDeclaredMethod(metodo);
+			try {
+				method.invoke(null);//by class
+			} catch (InvocationTargetException e) {
+				System.out.println();
+				//throw new RuntimeException(e);
+			}
+		} catch (NoSuchMethodException e) {
+			System.out.println();
+			//throw new RuntimeException(e);
+			//e.printStackTrace();
+		} catch (RuntimeException e) {
+			System.out.println();
+			//throw new RuntimeException(e);
+			//e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			System.out.println();
+			//throw new RuntimeException(e);
+			//e.printStackTrace();
 		}
-		out+=" "+texto+" ";
-		for( int i=1 ; i<=asteriscos-1 ; i++) {
-			out+="*";
-		}
-		
-		for( int i=1 ; i<=out.length() ; i++) {
-			linea+="*";
-		}
-		linea+="\n";
-		
-		out = "\n"+linea+out+linea+"\n";
-		ui.print(out);
-		
 	}
+
 
 
 

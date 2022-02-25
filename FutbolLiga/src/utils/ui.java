@@ -4,8 +4,10 @@
  *
  */
 
-package liga;
+package utils;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
 import java.util.Scanner;
 
 public class ui {
@@ -37,6 +39,9 @@ public class ui {
 		System.out.println(texto);
 	}
 	
+	
+	//#### entrada por teclado
+
 	/**
 	 * Read (form keyboard) 
 	 * @return String
@@ -187,6 +192,39 @@ public class ui {
 		} else {
 			return "";
 		}
+	}
+
+	
+	
+	//##### Útiles diseño
+	
+	
+	/**
+	 * Imprime la cabecera con el texto dado 
+	 */
+	public static void printCabecera(String texto) {
+		int longitudLinea=50;
+		String linea="\n";
+		String out = "";
+		
+		//out += "*****************************************\n";
+		int asteriscos=( longitudLinea-texto.length() )/2;
+		for( int i=1 ; i<=asteriscos-1 ; i++) {
+			out+="*";
+		}
+		out+=" "+texto+" ";
+		for( int i=1 ; i<=asteriscos-1 ; i++) {
+			out+="*";
+		}
+		
+		for( int i=1 ; i<=out.length() ; i++) {
+			linea+="*";
+		}
+		linea+="\n";
+		
+		out = "\n"+linea+out+linea+"\n";
+		ui.print(out);
+		
 	}
 
 

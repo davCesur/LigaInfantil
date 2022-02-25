@@ -83,7 +83,7 @@ public class Calendario {
 		String cadena = "Calendario de Liga: \n";
 		for (int i=0;i<this.jornadas.length;i++)
 		{
-			cadena+=(i+1)+"Âª "+this.jornadas[i]+"\n";
+			cadena+=(i+1)+"ª "+this.jornadas[i]+"\n";
 		}
 		
 		return cadena;
