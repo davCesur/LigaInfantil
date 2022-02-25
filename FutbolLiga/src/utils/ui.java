@@ -52,6 +52,16 @@ public class ui {
 	}
 
 	/**
+	 * Read (form keyboard) 
+	 * @return String
+	 */
+	public static String readKeyboard(String mensaje) {
+		print(mensaje);
+		Scanner sc = new Scanner(System.in);
+		return sc.nextLine();
+	}
+
+	/**
 	 * Read (form keyboard) and repeat while is empty
 	 * @return String
 	 */

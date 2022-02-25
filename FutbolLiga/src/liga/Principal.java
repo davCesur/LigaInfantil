@@ -23,7 +23,7 @@ public class Principal {
 	public static void main(String[] args) {
 		
 		menu();
-		System.exit(0);
+		ui.print("Hasta otra amigo...");
 		
 	}
 	
@@ -278,8 +278,7 @@ public class Principal {
 			
 			ui.print("Ruta donde se guardará el archivo: " + datos.path() + "/");
 			ui.print("Nombre de archivo por defecto: "+nombreArchivo);
-			ui.print("Introduzca un nombre de archivo distinto (déjelo en blanco si no desea cambiarlo): ");
-			String leerNombreArchivo = ui.readKeyboard();
+			String leerNombreArchivo = ui.readKeyboard("Introduzca un nombre de archivo distinto (déjelo en blanco si no desea cambiarlo): ");
 			if( !leerNombreArchivo.equals("") ) {
 				nombreArchivo = leerNombreArchivo;
 			}
@@ -314,8 +313,7 @@ public class Principal {
 			
 			ui.print("Ruta donde se guardará el archivo: " + datos.path() + "/");
 			ui.print("Nombre de archivo por defecto: "+nombreArchivo);
-			ui.print("Introduzca un nombre de archivo distinto (déjelo en blanco si no desea cambiarlo): ");
-			String leerNombreArchivo = ui.readKeyboard();
+			String leerNombreArchivo = ui.readKeyboard("Introduzca un nombre de archivo distinto (déjelo en blanco si no desea cambiarlo): ");
 			if( !leerNombreArchivo.equals("") ) {
 				nombreArchivo = leerNombreArchivo;
 			}
