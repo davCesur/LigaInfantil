@@ -1,6 +1,8 @@
 
 package liga;
 
+import utils.ui;
+
 public class Liga {
 	private String nombre;
 	private Equipo[] equipos;
@@ -19,12 +21,37 @@ public class Liga {
 		
 	}
 
+	public void cambiarNombre() {
 
+		ui.print("El nombre actual de la liga es: " + this.getNombre());
+		String nombreLiga = ui.readKeyboard("Introduzca un nuevo nombre para liga: ");
+		while( nombreLiga.equals("") ) {
+			nombreLiga = ui.readKeyboard("No puede dejar en blanco el nombre.\n"
+					+ "Introduzca un nuevo nombre para liga: ");
+		}
+		
+		this.setNombre(nombreLiga);
+		ui.print("Los nuevos datos de la liga son:" + this.info() );
+		ui.readKeyboard("Pulse enter para volver.");
+		
+	}
+	
+	public String info() {
+		String salida = "";
+		
+		salida += "\nNombre de la liga: " + this.getNombre();
+		salida += "\nCantidad de equipos: " + this.getEquipos().length ;
+		salida += "\nCategoría de los jugadores: " + this.getEquipos()[0].getJugadores()[0].getCategoria();
+		salida += "\n";
+		
+		return salida;
+	}
+	
 	public String getNombre() {
 		return nombre;
 	}
 	public void setNombre(String nombre) {
-		this.nombre = nombre+" infantil.";
+		this.nombre = nombre;
 	}
 	public Equipo[] getEquipos() {
 		return equipos;

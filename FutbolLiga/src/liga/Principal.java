@@ -9,11 +9,6 @@ import utils.datos;
 
 public class Principal {
 
-	private static  int numeroEquipos = 20;
-	private static  int edadLiga=12;
-	private static  String nombreLiga="La SuperLiga";
-	private static  int jornadasJugadas = 15;
-
 	private static Equipo[] equipos;
 	private static Arbitro[] arbitros;
 	private static Liga liga;
@@ -28,13 +23,13 @@ public class Principal {
 	}
 	
 	private static void crearLiga() {
+
+		//datos por defecto en la generación automática
+		String nombreLiga = "La SuperLiga";
+		int edadLiga=12;
+		int jornadasJugadas = 15;
+		int numeroEquipos=8;
 		
-		int cantidadEquipos=2;
-		while( cantidadEquipos %2 !=0 | cantidadEquipos < 4 | cantidadEquipos > 40 ) {
-			cantidadEquipos = ui.readKeyboardInt("Introduzca un número de equipos (par entre 4 y 40): ");
-		}
-		
-		numeroEquipos = cantidadEquipos;
 		
 		equipos = crearListaEquipos(numeroEquipos, edadLiga);
 		arbitros = new Arbitro[numeroEquipos/2]; 
@@ -47,13 +42,29 @@ public class Principal {
 		generarPartidos(calendario,jornadasJugadas);
 		clasificacion = new Clasificacion(equipos,calendario);
 		
-		ui.print( "Liga creada automáticamente con "+" equipos\n"
+		ui.print( "Liga creada automáticamente"
+				+ liga.info()
 				+ "Pulse enter para volver");
 		ui.readKeyboard();
+		
+		//equipos[0].getJugadores()[0].cambiarEdad();
+		//ui.print(equipos[0].getJugadores()[0].getCategoria());
 
 
 	}
 
+	public void cambiarNumeroEquipos() {
+
+		int numeroEquipos=2;
+		while( !(numeroEquipos %2 ==0 && numeroEquipos >= 4 && numeroEquipos <= 40) ) {
+			numeroEquipos = ui.readKeyboardInt("Introduzca un número de equipos (par entre 4 y 40): ");
+		}
+		
+		
+
+	}
+
+	
 	private static Jugador[] crearListaJugadores(int numeroJugadores, int edad, Equipo equipo) {
 		String[] nombres = {"Pepe", "Juan", "María", "Melody", "Cayetano", "Christian", "Johnny",
 				"Ibrahim", "Muhammad", "Cho Hej", "Robertinho", "Alicinha","Paulo Anton",
@@ -231,18 +242,55 @@ public class Principal {
 	private static void menu() {
 
 		String[][] elements = {
-				{"1","1 - Crear Liga","crearLiga"},
-				{"2","2 - Editar Liga","menuEditarLiga"},
-				{"3","3 - Ver la clasificación","mostrarClasificacion"},
-				{"4","4 - Ver calendario","mostrarCalendario"},
-				{"5","5 - Guardar clasificación en archivo","guardarClasificacion"},
-				{"6","6 - Guardar calendario en archivo","guardarCalendario"},
-				{"","",""},
-				{"0","0 - Salir","noRepetir"},
-				{"","",""}
+				{"1","1 - Crear Liga"},
+				{"2","2 - Editar Liga"},
+				{"3","3 - Ver la clasificación"},
+				{"4","4 - Ver calendario"},
+				{"5","5 - Guardar clasificación en archivo"},
+				{"6","6 - Guardar calendario en archivo"},
+				{"",""},
+				{"0","0 - Salir"},
+				{"",""}
 		};
 		
-		menu(elements);
+		String opcion = ui.menu("GENERADOR DE LIGAS",elements);
+		
+		switch( opcion.toUpperCase() ) {
+		case "1":
+			crearLiga();
+			break;
+		case "2":
+			if( checkLiga("Primero tiene que crear una liga", true) ) {
+				menuEditarLiga();
+			}
+			break;
+		case "3":
+			if( checkLiga("Primero tiene que crear una liga", true) ) {
+				mostrarClasificacion();
+			}
+			break;
+		case "4":
+			if( checkLiga("Primero tiene que crear una liga", true) ) {
+				mostrarCalendario();
+			}
+			break;
+		case "5":
+			if( checkLiga("Primero tiene que crear una liga", true) ) {
+				guardarClasificacion();
+			}
+			break;
+		case "6":
+			if( checkLiga("Primero tiene que crear una liga", true) ) {
+				guardarCalendario();
+			}
+			break;
+		case "0":
+			ui.print("\nSaliendo... ¡Hasta otra amigo!\n\n");
+			System.exit(0);
+		}
+		
+		menu();
+
 	}
 	
 	/**
@@ -251,13 +299,29 @@ public class Principal {
 	private static void menuEditarLiga() {
 
 		String[][] elements = {
-				{"1","1 - Modificar el número de equipos","modificarNumeroEquipos"},
-				{"","",""},
-				{"0","0 - Volver","noRepetir"},
-				{"","",""}
+			{"1","1 - Mostrar los datos de la liga"},
+			{"2","2 - Editar el nombre de la liga"},
+			{"3","3 - Editar equipos"},
+			{"",""},
+			{"0","0 - Volver"},
+			{"",""}
 		};
 
-		menu(elements);
+		String opcion = ui.menu("EDITAR LA LIGA", elements);
+		
+		switch( opcion.toUpperCase() ) {
+		case "1":
+			ui.print(liga.info());
+			ui.readKeyboard("Pulse enter para volver");
+			menuEditarLiga();
+			break;
+		case "2":
+			liga.cambiarNombre();
+			menuEditarLiga();
+			break;
+		case "0":
+		}
+
 	}
 	
 	
@@ -331,19 +395,30 @@ public class Principal {
 		ui.readKeyboard();
 	}
 	
-	
+	/** 
+	 * Comprueba si se ha creado la liga, reportando un error y esperando a pulsar enter
+	 */
+	private static boolean checkLiga(String errorMensaje, boolean pulsar) {
+		
+		if( checkLiga(errorMensaje) ) {
+			return true;
+		} else {
+			ui.readKeyboard("Pulse enter para continuar.");
+			return false;
+		}
+	}
 
 	/** 
-	 * Comprueba si se ha creado la liga
+	 * Comprueba si se ha creado la liga, reportanto un error en caso de que no
 	 */
 	private static boolean checkLiga(String errorMensaje) {
-		if( liga == null ) {
+		
+		if( checkLiga() ) {
+			return true;
+		} else {
 			ui.print(errorMensaje);
 			return false;
-		} else {
-			return true;
 		}
-			
 	}
 	
 	/** 
@@ -357,109 +432,6 @@ public class Principal {
 		}
 			
 	}
-	
-	/**
-	 * Imprime por salida estándar en formato menu
-	 * @param String[][] elementos del menu
-	 */
-	private static void printMenu(String[][] elements) {
-		ui.printCabecera("GENERADOR DE LIGAS");
-		ui.print("          Seleccione una opción\n");
-		ui.print("\n");
-
-		//Print elements
-		for( String[] element:elements ) {
-			ui.print("  "+element[1]+"\n");
-		}
-	}
-
-	
-	/**
-	 * Muestra un menú según el array 
-	 * para mostrar el menú inicial
-	 */
-	public static void menu(String[][] elements) {
-
-		ui.cleanConsole();
-		printMenu(elements);
-
-		//Save valid options for check later
-		String[] validOptions = new String[0];
-		for( String[] element:elements ) {
-			if( element[0]!="" ) { //Exclude elements without option (information only) 
-				String elementTmp[] = new String[validOptions.length+1];
-				System.arraycopy(validOptions, 0, elementTmp, 0, validOptions.length);
-				elementTmp[elementTmp.length-1] = element[0];
-				validOptions = elementTmp;
-			}
-		}
-
-		ui.print("Introduzca una opción: ");
-		String option;
-		int forClean=0;
-		while( ( option = ui.readWhitOptions(validOptions) ).isEmpty() ) {
-			System.out.print("Opción incorrecta. Introduzca una opción: ");	
-			forClean++;
-			if( forClean%10 == 0) { //Clean console and show menu again after 10 errors
-				ui.cleanConsole();
-				printMenu(elements);
-				ui.print("Introduzca una opción: ");
-			}
-		}
-
-		//Buscamos el elemento en elements y lo ejecutamos con lanzador
-		boolean repetirMenu = true;
-		for( String[] element:elements ) {
-			if( !element[0].equals("") ) { //Exclude elementos sin opción seleccionable
-				if( option.equals(element[0]) ) { //si hemos encontrado la selección, ejecutamos el método
-					if( element[2].equals("noRepetir") ) {
-						repetirMenu=false;
-					} else {
-						lanzador(element[2]);
-					}
-					break;
-				}
-			}
-		}
-		
-		if( repetirMenu ) {
-			menu(elements);
-		}
-
-	}
-	
-	/**
-	 * Ejecuta el método method'metodo'
-	 * donde metodo es el nombre restante del método a ejecutar
-	 * ej: lanzador('Hola') ejecuta el método methodHola()
-	 * @param metodo
-	 */
-	public static void lanzador(String metodo) {
-		try {
-			Method method = Principal.class.getDeclaredMethod(metodo);
-			try {
-				method.invoke(null);//by class
-			} catch (InvocationTargetException e) {
-				System.out.println();
-				//throw new RuntimeException(e);
-			}
-		} catch (NoSuchMethodException e) {
-			System.out.println();
-			//throw new RuntimeException(e);
-			//e.printStackTrace();
-		} catch (RuntimeException e) {
-			System.out.println();
-			//throw new RuntimeException(e);
-			//e.printStackTrace();
-		} catch (IllegalAccessException e) {
-			System.out.println();
-			//throw new RuntimeException(e);
-			//e.printStackTrace();
-		}
-	}
-
-
-
 
 
 }

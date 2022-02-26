@@ -10,18 +10,6 @@ import java.util.Scanner;
 
 public class ui {
 
-	/**
-	 * 
-	 */
-	public ui() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-	}
 	
 	/**
 	 * Clear console printing 200 new lines
@@ -32,9 +20,18 @@ public class ui {
 		}
 	}
 
-
+	/**
+	 * Muestra por pantalla el texto pasado
+	 */
 	public static void print(String texto) {
 		System.out.println(texto);
+	}
+	
+	/**
+	 * Muestra por pantalla el texto pasado sin hacer retorno de carro
+	 */
+	public static void print(String texto, boolean bool) {
+		System.out.print(texto);
 	}
 	
 	
@@ -47,7 +44,6 @@ public class ui {
 	public static String readKeyboard() {
 		Scanner sc = new Scanner(System.in);
 		String retorno = sc.nextLine();
-		sc.close();
 		return retorno;
 	}
 
@@ -59,7 +55,6 @@ public class ui {
 		print(mensaje);
 		Scanner sc = new Scanner(System.in);
 		String retorno = sc.nextLine();
-		sc.close();
 		return retorno;
 	}
 
@@ -80,7 +75,6 @@ public class ui {
 			input = sc.nextLine();
 		}
 		
-		sc.close();
 		return input;
 	}
 
@@ -111,7 +105,6 @@ public class ui {
 				input = sc.nextLine();
 			}
 		}
-		sc.close();
 		return output;
 	}
 	public static int readKeyboardInt() {
@@ -145,7 +138,6 @@ public class ui {
 				input = sc.nextLine();
 			}
 		}
-		sc.close();
 		return output;
 	}
 
@@ -177,7 +169,6 @@ public class ui {
 				input = sc.nextLine();
 			}
 		}
-		sc.close();
 
 		if( decimals > 0) {
 			return (double)(Math.round(output*Math.pow(10,decimals)))/(Math.pow(10,decimals));
@@ -242,6 +233,61 @@ public class ui {
 		ui.print(out);
 		
 	}
+	
+	
+	/**
+	 * Imprime por salida estándar en formato menu
+	 * @param String[][] elementos del menu
+	 */
+	private static void printMenu(String cabecera, String[][] elements) {
+		
+		ui.printCabecera(cabecera);
+		ui.print("          Seleccione una opción\n");
+		ui.print("\n");
+
+		//Print elements
+		for( String[] element:elements ) {
+			ui.print("  "+element[1]+"\n");
+		}
+	}
+
+	
+	/**
+	 * Muestra un menú según array pasado 
+	 * Retorna String con la opción escogida
+	 */
+	public static String menu(String cabecera, String[][] elements) {
+
+		ui.cleanConsole();
+		printMenu(cabecera, elements);
+
+		//Save valid options for check later
+		String[] validOptions = new String[0];
+		for( String[] element:elements ) {
+			if( element[0]!="" ) { //Exclude elements without option (information only) 
+				String elementTmp[] = new String[validOptions.length+1];
+				System.arraycopy(validOptions, 0, elementTmp, 0, validOptions.length);
+				elementTmp[elementTmp.length-1] = element[0];
+				validOptions = elementTmp;
+			}
+		}
+
+		ui.print("Introduzca una opción: ", true);
+		String option;
+		int forClean=0;
+		while( ( option = ui.readWhitOptions(validOptions) ).isEmpty() ) {
+			ui.print("Opción incorrecta. Introduzca una opción: ", true);	
+			forClean++;
+			if( forClean%10 == 0) { //Clean console and show menu again after 10 errors
+				ui.cleanConsole();
+				printMenu(cabecera, elements);
+				ui.print("Introduzca una opción: ", true);
+			}
+		}
+		
+		return option;
+	}
+
 
 
 }
