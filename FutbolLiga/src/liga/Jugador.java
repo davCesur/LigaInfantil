@@ -2,10 +2,36 @@
 package liga;
 
 public class Jugador extends Persona{
+	
 	private int dorsal;
 	private String posicion;
 	private String categoria;
 	private Equipo equipo;
+	
+	
+	private String[][] categorias = {
+		{"Chupetí­n","4","5"},
+		{"Prebenjamín","6","7"},
+		{"Benjamín","8","9"},
+		{"Alevín","10","11"},
+		{"Infantil","12","13"},
+		{"Cadete","14","15"},
+		{"Juvenil","16","19"}
+	};
+	
+	public void cambiarEdad() {
+
+		int edad = this.getEdad();
+		int nuevaEdad=0;
+		
+		while( !(nuevaEdad >= 8 && nuevaEdad <= 65) ) {
+			nuevaEdad = ui.readKeyboardInt("Edad actual: "+edad+" años\n"
+					+"Introduzca la nueva edad del jugador (entre 8 y 65): ");
+		}
+		
+		this.setEdad(nuevaEdad);
+	}
+
 	
 	@Override
 	public void setEdad(int edad){
@@ -28,35 +54,33 @@ public class Jugador extends Persona{
 	public String getCategoria() {
 		return categoria;
 	}
+	public String[][] getCategorias() {
+		return categorias;
+	}
+	
 	private String setCategoria(int edad) {
-		switch (edad) {
-		case 4:
-		case 5:
-			return "ChupetÃ­n";
-		case 6:
-		case 7:
-			return "Prebenjamin";
-		case 8:
-		case 9:
-			return "Benjamin";
-		case 10:
-		case 11:
-			return "AlevÃ­n";
-		case 12:
-		case 13:
-			return "Infantil";
-		case 14:
-		case 15:
-			return "Cadete";
-		case 16:
-		case 17:
-		case 18:
-		case 19:
-			return "Juvenil";
-		default:
-			return "N/A";
 		
+		String categoria = "";
+		
+		for( int i=0 ; i < categorias.length ; i++ ) {
+			int rinicial=0;
+			int rfinal=0;
+			try {
+				rinicial = Integer.valueOf(categorias[i][1]);
+				rfinal = Integer.valueOf(categorias[i][2]);
+			}
+			catch (NumberFormatException ex) {
+				ui.print("Ocurrió un error en jugador.setCategoria try");
+				System.exit(1);
+			}
+			
+			if( edad >= rinicial && edad <= rfinal ) {
+				categoria = categorias[i][0];
+				break;
+			}
 		}
+		
+		return categoria;
 	}
 
 	public Equipo getEquipo() {
@@ -72,7 +96,7 @@ public class Jugador extends Persona{
 		return super.toString()+//Imprimimos el toString de Persona
 				"Categoria: "+categoria+"\n"+				
 				"Equipo: "+equipo.getNombre()+"\n"+
-				"PosiciÃ³n: "+posicion+", Dorsal: "+dorsal+"\n";
+				"Posición: "+posicion+", Dorsal: "+dorsal+"\n";
 	}
 	
 }

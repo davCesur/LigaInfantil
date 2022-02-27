@@ -1,35 +1,333 @@
 
 package liga;
 
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.util.Arrays;
 
 public class Principal {
 
+	private static Equipo[] equipos;
+	private static Arbitro[] arbitros;
+	private static Liga liga;
+	private static Calendario calendario;
+	private static Clasificacion clasificacion;
+
 	public static void main(String[] args) {
-		final int NUMEROEQUIPOS = 20;
-		final int EDAD=12;
-		final String NOMBRELIGA="La SuperLiga";
-		final int JORNADASJUGADAS = 15;
 		
-		menu();
-		System.exit(0);
+		ui.print("");
+		crearLiga();
+		menuPrincipal();
+		ui.print("Hasta otra amigo...");
 		
+	}
+	
+	private static void crearNuevaLiga() {
 		
-		Equipo[] misEquipos = crearListaEquipos(NUMEROEQUIPOS, EDAD);
-		Arbitro[] arbitros = new Arbitro[NUMEROEQUIPOS/2]; 
+		String nombreLiga = ui.readKeyboardString("Introduzca el nombre de la liga: ");
+		while( nombreLiga.equals("") | nombreLiga.length()>20 ) {
+			ui.print("No puede dejar el nombre de la liga vacío o superar los 20 caracteres");
+			nombreLiga = ui.readKeyboardString("Introduzca el nombre de la liga: ");
+		}
+		
+		int numeroEquipos=2;
+		while( numeroEquipos%2==1 | numeroEquipos<4 | numeroEquipos>40 ) {
+			numeroEquipos = ui.readKeyboardInt("Introduzca un número de equipos (par entre 4 y 40): ");
+		}
+		
+		Jugador jugador = new Jugador();
+		String[][] categorias = jugador.getCategorias();
+		int rangoInicial = 0;
+		int rangoFinal = 0;
+		try {
+			rangoInicial = Integer.valueOf(categorias[0][1]);
+			rangoFinal = Integer.valueOf(categorias[categorias.length-1][2]);
+		}
+		catch (NumberFormatException ex) {
+			ui.print("Ocurrió un error en principal.crearNuevaLiga try");
+			System.exit(1);
+		}
+		
+		int edadLiga=-1;
+		while( edadLiga<rangoInicial | edadLiga>rangoFinal ) {
+			edadLiga = ui.readKeyboardInt("Introduzca la edad de los jugadores (entre "+rangoInicial+" y "+rangoFinal+"): ");
+		}
+		
+		int jornadasJugadas=-1;
+		while( jornadasJugadas<0 | jornadasJugadas>(numeroEquipos-1)*2 ) {
+			jornadasJugadas = ui.readKeyboardInt("Introduzca un número de jornadas hechas (entre 0 y "+( (numeroEquipos-1)*2 )+"): ");
+		}
+		
+		crearLiga(nombreLiga, edadLiga, numeroEquipos, jornadasJugadas);
+		
+		ui.print( "\n\nLiga creada correctamente"
+				+ liga.info()
+				+ "Pulse enter para continuar");
+		ui.readKeyboard();
+
+
+	}
+	
+	private static void crearLiga() {
+		
+		String nombreLiga = "La SuperLiga";
+		int edadLiga=12;
+		int jornadasJugadas = 15;
+		int numeroEquipos=8;
+		crearLiga(nombreLiga, edadLiga, numeroEquipos, jornadasJugadas);
+		
+		ui.print( "\n\nLiga creada automáticamente"
+				+ liga.info());
+
+	}
+
+	private static void crearLiga(String nombreLiga, int edadLiga, int numeroEquipos, int jornadasJugadas) {
+		
+		equipos = crearListaEquipos(numeroEquipos, edadLiga);
+		arbitros = new Arbitro[numeroEquipos/2]; 
 		for (int i=0;i<arbitros.length;i++) {
 			arbitros[i]= crearArbitro();
 		}
 		
-		Liga miLiga = new Liga(NOMBRELIGA,misEquipos,arbitros);
-		System.out.println(miLiga.getCalendario());
-		Calendario miCalendario=miLiga.getCalendario();
-		generarPartidos(miCalendario,JORNADASJUGADAS);
+		liga = new Liga(nombreLiga,equipos,arbitros);
+		calendario = liga.getCalendario();
+		generarPartidos(calendario,jornadasJugadas);
+		clasificacion = new Clasificacion(equipos,calendario);
 		
-		
-		Clasificacion clasificacion = new Clasificacion(misEquipos,miCalendario);
-		System.out.println(clasificacion);
+		//equipos[0].getJugadores()[0].cambiarEdad();
+		//ui.print(equipos[0].getJugadores()[0].getCategoria());
+
 	}
 
+	
+	/**
+	 * Mostramos el ménu pricipal
+	 */
+	private static void menuPrincipal() {
+
+		String[][] elements = {
+				{"1","1 - Crear nueva Liga"},
+				{"2","2 - Editar Liga"},
+				{"3","3 - Ver la clasificación"},
+				{"4","4 - Ver calendario"},
+				{"",""},
+				{"0","0 - Salir"},
+				{"",""}
+		};
+		
+		String opcion = ui.menu("GESTIÓN DE LIGAS",elements);
+		
+		switch( opcion.toUpperCase() ) {
+		case "1":
+			crearNuevaLiga();
+			break;
+		case "2":
+			if( checkLiga("Primero tiene que crear una liga", true) ) {
+				menuEditarLiga();
+			}
+			break;
+		case "3":
+			if( checkLiga("Primero tiene que crear una liga", true) ) {
+				mostrarClasificacion();
+			}
+			break;
+		case "4":
+			if( checkLiga("Primero tiene que crear una liga", true) ) {
+				mostrarCalendario();
+			}
+			break;
+		case "0":
+			ui.print("\nSaliendo... ¡Hasta otra amigo!\n\n");
+			System.exit(0);
+		}
+		
+		menuPrincipal();
+
+	}
+	
+	/**
+	 * Mostramos el ménu de Editar Liga
+	 */
+	private static void menuEditarLiga() {
+
+		String[][] elements = {
+			{"1","1 - Mostrar los datos de la liga"},
+			{"2","2 - Editar el nombre de la liga"},
+			{"3","3 - Cambiar resultados"},
+			{"",""},
+			{"0","0 - Volver"},
+			{"",""}
+		};
+
+		String opcion = ui.menu("EDITAR LA LIGA", elements);
+		
+		switch( opcion.toUpperCase() ) {
+		case "1":
+			ui.print(liga.info());
+			ui.readKeyboard("Pulse enter para continuar");
+			menuEditarLiga();
+			break;
+		case "2":
+			liga.cambiarNombre();
+			menuEditarLiga();
+			break;
+		case "3":
+			cambiarResultados();
+			menuEditarLiga();
+			break;
+		case "0":
+		}
+
+	}
+	
+	public static void cambiarResultados() {
+		
+		String[] cabecera = {"","Equipo local", "", "","Equipo visitante", "Árbitro"};
+
+		
+		String[][] tabla = {};
+		int contador=0;
+		Partido[] partidosAeditar = {};
+
+		Jornada[] jornadas = liga.getCalendario().getJornadas();
+		for( int i=0 ; i<jornadas.length ; i++ ) {
+			
+			String[] arrayTempJornada = {"","Jornada " + (i+1)};
+			tabla = myutils.arrayAdd(tabla, arrayTempJornada);
+			
+			Partido[] partidos = jornadas[i].getPartidos();
+			for( int j=0 ; j<partidos.length ; j++ ) {
+				
+				contador++;
+				partidosAeditar = myutils.arrayAdd(partidosAeditar, partidos[j]);
+			
+				String[] arrayPartido = partidos[j].toStringArray();
+				String[] arrayTempPartido = new String[arrayPartido.length+1];
+				
+				//numeroPartidos = myutils.arrayAdd(numeroPartidos, contador);
+				arrayTempPartido[0] = Integer.toString(contador);
+				
+				for( int k=0 ; k<arrayPartido.length ; k++ ) {
+					arrayTempPartido[k+1] = arrayPartido[k];
+				}
+
+				tabla = myutils.arrayAdd(tabla, arrayTempPartido);
+				
+			}
+		}
+		
+		ui.tabla(cabecera, tabla);
+		ui.print("\n");
+
+		int partidoSeleccionado = ui.readKeyboardInt("Seleccione el partido a editar: ")-1;
+		while( partidoSeleccionado < 0 | partidoSeleccionado > contador ) {
+			partidoSeleccionado = ui.readKeyboardInt("Partido incorrecto.\nSeleccione el partido a editar: ")-1;
+		}
+		
+		ui.print("\nPartido seleccionado:");
+		Partido partidoAeditar = partidosAeditar[partidoSeleccionado];
+		ui.print(partidoAeditar.toString());
+		
+		int resultado = ui.readKeyboardInt("Introduzca el resultado para:\n"+partidoAeditar.getLocal().getNombre() );
+		while( resultado < 0 | resultado > 40 ) {
+			resultado = ui.readKeyboardInt("Resultado incorrecto.\n"
+					+ "Introduzca un valor entre 0 y 40:");
+		}
+		partidoAeditar.setgLocal(resultado);
+		
+		resultado = ui.readKeyboardInt("Introduzca el resultado para:\n"+partidoAeditar.getVisitante().getNombre() );
+		while( resultado < 0 | resultado > 40 ) {
+			resultado = ui.readKeyboardInt("Resultado incorrecto.\n"
+					+ "Introduzca un valor entre 0 y 40:");
+		}
+		partidoAeditar.setgVisitante(resultado);
+
+		ui.print("/nPartido actualizado correctamente:\n"+partidoAeditar.toString()+"\n");
+		ui.readKeyboard("Pulse enter para continuar");
+
+	}
+
+
+	
+	private static void mostrarClasificacion() {
+		
+		ui.print(clasificacion.toString());
+		
+		ui.print("Pulse enter para continuar");
+		ui.readKeyboard();
+	}
+	
+
+	private static void mostrarCalendario() {
+
+		ui.print(calendario.toString());
+		
+		ui.print("Pulse enter para continuar");
+		ui.readKeyboard();
+	}
+	
+	private static String[][] calendarioToStringArray() {
+		
+		String[][] retorno = {};
+
+		Jornada[] jornadas = liga.getCalendario().getJornadas();
+		for( int i=0 ; i<jornadas.length ; i++ ) {
+			
+			String[] arrayTempJornada = {"Jornada " + (i+1)};
+			retorno = myutils.arrayAdd(retorno, arrayTempJornada);
+			
+			Partido[] partidos = jornadas[i].getPartidos();
+			for( Partido partido:partidos ) {
+			
+				String[] arrayTempPartido = partido.toStringArray();
+				retorno = myutils.arrayAdd(retorno, arrayTempPartido);
+				
+			}
+		}
+		
+		return retorno;
+	}
+	
+	/** 
+	 * Comprueba si se ha creado la liga, reportando un error y esperando a pulsar enter
+	 */
+	private static boolean checkLiga(String errorMensaje, boolean pulsar) {
+		
+		if( checkLiga(errorMensaje) ) {
+			return true;
+		} else {
+			ui.readKeyboard("Pulse enter para continuar.");
+			return false;
+		}
+	}
+
+	/** 
+	 * Comprueba si se ha creado la liga, reportanto un error en caso de que no
+	 */
+	private static boolean checkLiga(String errorMensaje) {
+		
+		if( checkLiga() ) {
+			return true;
+		} else {
+			ui.print(errorMensaje);
+			return false;
+		}
+	}
+	
+	/** 
+	 * Comprueba si se ha creado la liga
+	 */
+	private static boolean checkLiga() {
+		if( liga == null ) {
+			return false;
+		} else {
+			return true;
+		}
+			
+	}
+
+	
+	
 	private static Jugador[] crearListaJugadores(int numeroJugadores, int edad, Equipo equipo) {
 		String[] nombres = {"Pepe", "Juan", "María", "Melody", "Cayetano", "Christian", "Johnny",
 				"Ibrahim", "Muhammad", "Cho Hej", "Robertinho", "Alicinha","Paulo Anton",
@@ -73,7 +371,6 @@ public class Principal {
 		}
 		return listaJugadores;
 	}
-
 	
 	private static Equipo[] crearListaEquipos(int numeroEquipos, int edad) {
 		String[]  barrios = {"El Perchel", "La Victoria", "El Rincon de la Victoria",
@@ -187,130 +484,20 @@ public class Principal {
 		int totalJornadas = jornadas.length;
 		
 		for (int i=0; i<numeroJornadas && i<totalJornadas; i++) {
-			System.out.println("Jornada: "+(i+1));
+//System.out.println("Jornada: "+(i+1));
 			Partido[] partidos = jornadas[i].getPartidos();
 			for (Partido par: partidos) {
 				int golesLocales = (int)Math.floor((Math.random())*MAXGOLES);
 				int golesVisitantes = (int)Math.floor((Math.random())*MAXGOLES);
 				par.setgLocal(golesLocales);
 				par.setgVisitante(golesVisitantes);
-				System.out.println(par);
+//System.out.println(par);
 			}
 			jornadas[i].terminar();
 		}
 		
 	}
 	
-	/**
-	 * Show menu and wait for a valid option
-	 *  Get: Array whit elements in format {
-	 *   {"option1", "title", "function to execute"},
-	 *   {"option2", "title", "function to execute"} }
-	 *  Return: valid option of array parsed
-	 */
-	private static void menu() {
-
-		String[][] elements = {
-				{"1","1  - Operaciones matemáticas"},
-				{"2","2  - Serie de Fibonacci"},
-				{"9","9  - Pasar vocales a mayúsculas\n"
-				+"       y consonantes a minúsculas"},
-				{"11","11 - Extractor de vocales"},
-				{"",""},
-				{"","Cambiar velocidad de animaciones:"},
-				{"N","    N - Normal"},
-				{"D","    D - Desactivado (Disabled)"},
-				{"",""},
-				{"0","0 - Salir"},
-				{"",""}
-		};
-
-		ui.cleanConsole();
-		printMenu(elements);
-
-		//Save valid options for check later
-		String[] validOptions = new String[0];
-		for( String[] element:elements ) {
-			if( element[0]!="" ) { //Exclude elements without option (information only) 
-				String elementTmp[] = new String[validOptions.length+1];
-				System.arraycopy(validOptions, 0, elementTmp, 0, validOptions.length);
-				elementTmp[elementTmp.length-1] = element[0];
-				validOptions = elementTmp;
-			}
-		}
-
-		ui.print("Introduzca una opción: ");
-		String option;
-		int forClean=0;
-		while( ( option = ui.readWhitOptions(validOptions) ).isEmpty() ) {
-			System.out.print("Opción incorrecta. Introduzca una opción: ");	
-			forClean++;
-			if( forClean%10 == 0) { //Clean console and show menu again after 10 errors
-				ui.cleanConsole();
-				printMenu(elements);
-				ui.print("Introduzca una opción: ");
-			}
-		}
-
-		switch( option.toUpperCase() ) {
-		case "1":
-		case "N":
-			printMenuCabecera("Operaciones matemáticas");
-			// aquí el método. ej: operacionesMatematicas();
-			break;
-		case "0":
-			ui.print("\nSaliendo... ¡Hasta otra amigo!\n\n");
-			System.exit(0);
-		}
-
-		//System.out.println("despues de switch");
-		//MyUtils.readKeyboard();
-
-		menu();
-
-	}
-	/**
-	 * Imprime por salida estándar el menú principal
-	 */
-	private static void printMenu(String[][] elements) {
-		printMenuCabecera("GENERADOR DE LIGAS");
-		ui.print("          Seleccione una opción\n");
-		ui.print("\n");
-
-		//Print elements
-		for( String[] element:elements ) {
-			ui.print("  "+element[1]+"\n");
-		}
-	}
-	/**
-	 * Imprime la cabecera para cada sección
-	 */
-	private static void printMenuCabecera(String texto) {
-		int longitudLinea=50;
-		String linea="\n";
-		String out = "";
-		
-		//out += "*****************************************\n";
-		int asteriscos=( longitudLinea-texto.length() )/2;
-		for( int i=1 ; i<=asteriscos-1 ; i++) {
-			out+="*";
-		}
-		out+=" "+texto+" ";
-		for( int i=1 ; i<=asteriscos-1 ; i++) {
-			out+="*";
-		}
-		
-		for( int i=1 ; i<=out.length() ; i++) {
-			linea+="*";
-		}
-		linea+="\n";
-		
-		out = "\n"+linea+out+linea+"\n";
-		ui.print(out);
-		
-	}
-
-
 
 
 }

@@ -6,22 +6,11 @@
 
 package liga;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class ui {
 
-	/**
-	 * 
-	 */
-	public ui() {
-		// TODO Auto-generated constructor stub
-	}
-
-	/**
-	 * @param args
-	 */
-	public static void main(String[] args) {
-	}
 	
 	/**
 	 * Clear console printing 200 new lines
@@ -32,18 +21,42 @@ public class ui {
 		}
 	}
 
-
+	/**
+	 * Muestra por pantalla el texto pasado
+	 */
 	public static void print(String texto) {
 		System.out.println(texto);
 	}
 	
+	/**
+	 * Muestra por pantalla el texto pasado sin hacer retorno de carro
+	 */
+	public static void print(String texto, boolean bool) {
+		System.out.print(texto);
+	}
+	
+	
+	//#### entrada por teclado
+
 	/**
 	 * Read (form keyboard) 
 	 * @return String
 	 */
 	public static String readKeyboard() {
 		Scanner sc = new Scanner(System.in);
-		return sc.nextLine();
+		String retorno = sc.nextLine();
+		return retorno;
+	}
+
+	/**
+	 * Read (form keyboard) 
+	 * @return String
+	 */
+	public static String readKeyboard(String mensaje) {
+		print(mensaje);
+		Scanner sc = new Scanner(System.in);
+		String retorno = sc.nextLine();
+		return retorno;
 	}
 
 	/**
@@ -62,7 +75,7 @@ public class ui {
 			print("No ha introducido ningún valor.\n"+mensaje);
 			input = sc.nextLine();
 		}
-
+		
 		return input;
 	}
 
@@ -189,5 +202,186 @@ public class ui {
 		}
 	}
 
+	
+	
+	//##### Útiles diseño
+	
+	
+	/**
+	 * Imprime la cabecera con el texto dado 
+	 */
+	public static void printCabecera(String texto) {
+		int longitudLinea=50;
+		String linea="\n";
+		String out = "";
+		
+		//out += "*****************************************\n";
+		int asteriscos=( longitudLinea-texto.length() )/2;
+		for( int i=1 ; i<=asteriscos-1 ; i++) {
+			out+="*";
+		}
+		out+=" "+texto+" ";
+		for( int i=1 ; i<=asteriscos-1 ; i++) {
+			out+="*";
+		}
+		
+		for( int i=1 ; i<=out.length() ; i++) {
+			linea+="*";
+		}
+		linea+="\n";
+		
+		out = "\n"+linea+out+linea+"\n";
+		ui.print(out);
+		
+	}
+	
+	
+	/**
+	 * Imprime por salida estándar en formato menu
+	 * @param String[][] elementos del menu
+	 */
+	private static void printMenu(String cabecera, String[][] elements) {
+		
+		ui.printCabecera(cabecera);
+		ui.print("          Seleccione una opción\n");
+		ui.print("\n");
+
+		//Print elements
+		for( String[] element:elements ) {
+			ui.print("  "+element[1]+"\n");
+		}
+	}
+
+	
+	/**
+	 * Muestra un menú según array pasado 
+	 * Retorna String con la opción escogida
+	 */
+	public static String menu(String cabecera, String[][] elements) {
+
+		//ui.cleanConsole();
+		ui.print("");
+		printMenu(cabecera, elements);
+
+		//Save valid options for check later
+		String[] validOptions = new String[0];
+		for( String[] element:elements ) {
+			if( element[0]!="" ) { //Exclude elements without option (information only) 
+				String elementTmp[] = new String[validOptions.length+1];
+				System.arraycopy(validOptions, 0, elementTmp, 0, validOptions.length);
+				elementTmp[elementTmp.length-1] = element[0];
+				validOptions = elementTmp;
+			}
+		}
+
+		ui.print("Introduzca una opción: ", true);
+		String option;
+		int forClean=0;
+		while( ( option = ui.readWhitOptions(validOptions) ).isEmpty() ) {
+			ui.print("Opción incorrecta. Introduzca una opción: ", true);	
+			forClean++;
+			if( forClean%10 == 0) { //Clean console and show menu again after 10 errors
+				ui.cleanConsole();
+				printMenu(cabecera, elements);
+				ui.print("Introduzca una opción: ", true);
+			}
+		}
+		
+		return option;
+	}
+
+
+	/**
+	 * Pinta una tabla 
+	 * @param array nombre de las columnas
+	 * @param matriz con los datos
+	 */
+	public static void tabla(String[] cabecera, String[][] tabla) {
+		
+		if( cabecera.length == 0 | tabla.length == 0 ) {
+			ui.print("Datos incorrectos recibidos en ui.tabla");
+		} else {
+			
+			//Determinamos la longitud máxima de cada celda
+			Integer[] anchoColumna = new Integer[cabecera.length];
+			for( String[] fila:tabla ) {
+				for( int i=0 ; i<fila.length ; i++ ) {
+					if( anchoColumna[i] == null ) {
+						anchoColumna[i] = fila[i].length();  
+					} else if ( anchoColumna[i] < fila[i].length() ) {
+						anchoColumna[i] = fila[i].length();  
+					}
+				}
+			}
+			
+			ui.print(Arrays.toString(anchoColumna));
+			
+			ui.print("");
+			//Pintamos la cabecera
+			ui.print("-", true);
+			for( int caracteres:anchoColumna ) {
+				//sumamos un caracter por el separador de cada columna
+				for( int i=0 ; i<=caracteres+1 ; i++ ) {
+					ui.print("-", true);
+				}
+				ui.print("-", true);
+			}
+			ui.print("");
+			ui.print("|", true);
+			for( int i=0 ; i<cabecera.length ; i++ ) {
+				ui.print(" ", true);
+				ui.print(cabecera[i], true);
+				for( int j=0 ; j<(anchoColumna[i]-cabecera[i].length()) ; j++ ) {
+					ui.print(" ", true);
+				}
+				ui.print(" ", true);
+				ui.print("|", true);
+			}
+			ui.print("");
+			ui.print("-", true);
+			for( int caracteres:anchoColumna ) {
+				for( int i=0 ; i<=caracteres+1 ; i++ ) {
+					ui.print("-", true);
+				}
+				ui.print("-", true);
+			}
+			
+			ui.print("");
+			for( String[] fila:tabla ) {
+				ui.print("|", true);
+				for( int i=0 ; i<cabecera.length ; i++ ) {
+					if( i < fila.length ) { //si está dentro del índice del array
+						ui.print(" ", true);
+						ui.print(fila[i], true);
+						for( int j=0 ; j<(anchoColumna[i]-fila[i].length()) ; j++ ) {
+							ui.print(" ", true);
+						}
+						ui.print(" ", true);
+						ui.print("|", true);
+					} else {
+						ui.print(" ", true);
+						for( int j=0 ; j<anchoColumna[i] ; j++ ) {
+							ui.print(" ", true);
+						}
+						ui.print(" ", true);
+						ui.print("|", true);
+					}
+				}
+				ui.print("");
+			}
+			
+			ui.print("-", true);
+			for( int caracteres:anchoColumna ) {
+				for( int i=0 ; i<=caracteres+1 ; i++ ) {
+					ui.print("-", true);
+				}
+				ui.print("-", true);
+			}
+			
+		}
+		
+		
+		
+	}
 
 }
