@@ -50,11 +50,6 @@ public class myutils {
 
 	public static String[][] arrayAdd(String array[][], String elemento[][])
 	{
-/*		ui.print("array:");
-		ui.print( Arrays.toString(array) );
-		ui.print("elemento:");
-		ui.print( Arrays.toString(elemento) );
-*/		
 		int longitud = array.length+elemento.length;
 
 		String nuevoArray[][] = new String[longitud][];
@@ -66,11 +61,40 @@ public class myutils {
 			nuevoArray[i+array.length] = elemento[i];
 		}
 
-//ui.print("segundo array");
-//ui.print( Arrays.toString(nuevoArray) );
 		return nuevoArray;
 		
 
+	}
+
+	public static Partido[] arrayAdd(Partido array[], Partido partido)
+	{
+		int longitud = array.length;
+
+		Partido nuevoArray[] = new Partido[longitud+1];
+
+		for (int i=0; i<array.length ; i++) {
+			nuevoArray[i] = array[i];
+		}
+		
+		nuevoArray[longitud] = partido;
+
+		return nuevoArray;
+	}
+
+	public static Partido[] arrayAdd(Partido array[], Partido partido[])
+	{
+		int longitud = array.length+partido.length;
+
+		Partido nuevoArray[] = new Partido[longitud];
+
+		for (int i=0; i<array.length ; i++) {
+			nuevoArray[i] = array[i];
+		}
+		for (int i=0; i<partido.length ; i++) {
+			nuevoArray[i+array.length] = partido[i];
+		}
+
+		return nuevoArray;
 	}
 
 }

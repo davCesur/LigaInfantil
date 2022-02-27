@@ -55,7 +55,7 @@ public class Principal {
 		
 		int jornadasJugadas=-1;
 		while( jornadasJugadas<0 | jornadasJugadas>(numeroEquipos-1)*2 ) {
-			jornadasJugadas = ui.readKeyboardInt("Introduzca un número de jornadas (entre 0 y "+( (numeroEquipos-1)*2 )+"): ");
+			jornadasJugadas = ui.readKeyboardInt("Introduzca un número de jornadas hechas (entre 0 y "+( (numeroEquipos-1)*2 )+"): ");
 		}
 		
 		crearLiga(nombreLiga, edadLiga, numeroEquipos, jornadasJugadas);
@@ -83,32 +83,6 @@ public class Principal {
 
 	private static void crearLiga(String nombreLiga, int edadLiga, int numeroEquipos, int jornadasJugadas) {
 		
-		String[] frasesInicio = {
-			"Calculando algorrinos",
-			"Invocando al bit ancestral",
-			"Generando booleanos cuánticos",
-			"Creando errores para darle encanto",
-			"Minando crypto con luz ajena",
-			"Ensordeciendo a Siri para darle dignidad",
-			"Escondiendo código usable",
-			"Agotando tu paciencia por no usar Linux",
-			"Te juro que es mi primera compilación precoz",
-			"Haciendo café para la batería",
-			"sudo ponme un 10"
-		};
-		
-		int numero = (int) Math.floor((Math.random())*frasesInicio.length);
-		
-		ui.print(frasesInicio[numero], true);
-		for( int i=0 ; i<5 ; i++ ) {
-			try {
-				ui.print(".",true);
-				Thread.sleep(400);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-
 		equipos = crearListaEquipos(numeroEquipos, edadLiga);
 		arbitros = new Arbitro[numeroEquipos/2]; 
 		for (int i=0;i<arbitros.length;i++) {
@@ -136,14 +110,12 @@ public class Principal {
 				{"2","2 - Editar Liga"},
 				{"3","3 - Ver la clasificación"},
 				{"4","4 - Ver calendario"},
-				{"5","5 - Guardar clasificación en archivo"},
-				{"6","6 - Guardar calendario en archivo"},
 				{"",""},
 				{"0","0 - Salir"},
 				{"",""}
 		};
 		
-		String opcion = ui.menu("GENERADOR DE LIGAS",elements);
+		String opcion = ui.menu("GESTIÓN DE LIGAS",elements);
 		
 		switch( opcion.toUpperCase() ) {
 		case "1":
@@ -211,28 +183,67 @@ public class Principal {
 	public static void cambiarResultados() {
 		
 		String[] cabecera = {"","Equipo local", "", "","Equipo visitante", "Árbitro"};
-		String[][] tabla = calendarioToStringArray();
 
-		for( int i=0 ; i<tabla.length ; i++ ) {
+		
+		String[][] tabla = {};
+		int contador=0;
+		Partido[] partidosAeditar = {};
+
+		Jornada[] jornadas = liga.getCalendario().getJornadas();
+		for( int i=0 ; i<jornadas.length ; i++ ) {
 			
-			//añadimos la numeración al principio
-			String[] nuevaFila = new String[tabla[i].length+1];
-
-			if( 2 > tabla[i].length ) { //Se sale del rango. Cabecera
-				nuevaFila[0] = "";
-			} else {
-				nuevaFila[0] = Integer.toString(i+1);
-			}
-
-			//copiamos el resto una columna más adelante (la 0 es para la numeración)
-			for( int j=0 ; j<tabla[i].length ; j++ ) {
-				nuevaFila[j+1] = tabla[i][j];
-			}
+			String[] arrayTempJornada = {"","Jornada " + (i+1)};
+			tabla = myutils.arrayAdd(tabla, arrayTempJornada);
 			
-			tabla[i] = nuevaFila;
+			Partido[] partidos = jornadas[i].getPartidos();
+			for( int j=0 ; j<partidos.length ; j++ ) {
+				
+				contador++;
+				partidosAeditar = myutils.arrayAdd(partidosAeditar, partidos[j]);
+			
+				String[] arrayPartido = partidos[j].toStringArray();
+				String[] arrayTempPartido = new String[arrayPartido.length+1];
+				
+				//numeroPartidos = myutils.arrayAdd(numeroPartidos, contador);
+				arrayTempPartido[0] = Integer.toString(contador);
+				
+				for( int k=0 ; k<arrayPartido.length ; k++ ) {
+					arrayTempPartido[k+1] = arrayPartido[k];
+				}
+
+				tabla = myutils.arrayAdd(tabla, arrayTempPartido);
+				
+			}
 		}
 		
 		ui.tabla(cabecera, tabla);
+		ui.print("\n");
+
+		int partidoSeleccionado = ui.readKeyboardInt("Seleccione el partido a editar: ")-1;
+		while( partidoSeleccionado < 0 | partidoSeleccionado > contador ) {
+			partidoSeleccionado = ui.readKeyboardInt("Partido incorrecto.\nSeleccione el partido a editar: ")-1;
+		}
+		
+		ui.print("\nPartido seleccionado:");
+		Partido partidoAeditar = partidosAeditar[partidoSeleccionado];
+		ui.print(partidoAeditar.toString());
+		
+		int resultado = ui.readKeyboardInt("Introduzca el resultado para:\n"+partidoAeditar.getLocal().getNombre() );
+		while( resultado < 0 | resultado > 40 ) {
+			resultado = ui.readKeyboardInt("Resultado incorrecto.\n"
+					+ "Introduzca un valor entre 0 y 40:");
+		}
+		partidoAeditar.setgLocal(resultado);
+		
+		resultado = ui.readKeyboardInt("Introduzca el resultado para:\n"+partidoAeditar.getVisitante().getNombre() );
+		while( resultado < 0 | resultado > 40 ) {
+			resultado = ui.readKeyboardInt("Resultado incorrecto.\n"
+					+ "Introduzca un valor entre 0 y 40:");
+		}
+		partidoAeditar.setgVisitante(resultado);
+
+		ui.print("/nPartido actualizado correctamente:\n"+partidoAeditar.toString()+"\n");
+		ui.readKeyboard("Pulse enter para continuar");
 
 	}
 
@@ -248,9 +259,8 @@ public class Principal {
 	
 
 	private static void mostrarCalendario() {
-		
-		String[] cabecera = {"Equipo local", "", "","Equipo visitante", "Árbitro"};
-		ui.tabla(cabecera, calendarioToStringArray());
+
+		ui.print(calendario.toString());
 		
 		ui.print("Pulse enter para continuar");
 		ui.readKeyboard();
