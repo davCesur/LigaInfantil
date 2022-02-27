@@ -3,9 +3,7 @@ package liga;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-
-import utils.ui;
-import utils.datos;
+import java.util.Arrays;
 
 public class Principal {
 
@@ -17,20 +15,100 @@ public class Principal {
 
 	public static void main(String[] args) {
 		
-		menu();
+		ui.print("");
+		crearLiga();
+		menuPrincipal();
 		ui.print("Hasta otra amigo...");
 		
 	}
 	
-	private static void crearLiga() {
+	private static void crearNuevaLiga() {
+		
+		String nombreLiga = ui.readKeyboardString("Introduzca el nombre de la liga: ");
+		while( nombreLiga.equals("") | nombreLiga.length()>20 ) {
+			ui.print("No puede dejar el nombre de la liga vacío o superar los 20 caracteres");
+			nombreLiga = ui.readKeyboardString("Introduzca el nombre de la liga: ");
+		}
+		
+		int numeroEquipos=2;
+		while( numeroEquipos%2==1 | numeroEquipos<4 | numeroEquipos>40 ) {
+			numeroEquipos = ui.readKeyboardInt("Introduzca un número de equipos (par entre 4 y 40): ");
+		}
+		
+		Jugador jugador = new Jugador();
+		String[][] categorias = jugador.getCategorias();
+		int rangoInicial = 0;
+		int rangoFinal = 0;
+		try {
+			rangoInicial = Integer.valueOf(categorias[0][1]);
+			rangoFinal = Integer.valueOf(categorias[categorias.length-1][2]);
+		}
+		catch (NumberFormatException ex) {
+			ui.print("Ocurrió un error en principal.crearNuevaLiga try");
+			System.exit(1);
+		}
+		
+		int edadLiga=-1;
+		while( edadLiga<rangoInicial | edadLiga>rangoFinal ) {
+			edadLiga = ui.readKeyboardInt("Introduzca la edad de los jugadores (entre "+rangoInicial+" y "+rangoFinal+"): ");
+		}
+		
+		int jornadasJugadas=-1;
+		while( jornadasJugadas<0 | jornadasJugadas>(numeroEquipos-1)*2 ) {
+			jornadasJugadas = ui.readKeyboardInt("Introduzca un número de jornadas (entre 0 y "+( (numeroEquipos-1)*2 )+"): ");
+		}
+		
+		crearLiga(nombreLiga, edadLiga, numeroEquipos, jornadasJugadas);
+		
+		ui.print( "\n\nLiga creada correctamente"
+				+ liga.info()
+				+ "Pulse enter para continuar");
+		ui.readKeyboard();
 
-		//datos por defecto en la generación automática
+
+	}
+	
+	private static void crearLiga() {
+		
 		String nombreLiga = "La SuperLiga";
 		int edadLiga=12;
 		int jornadasJugadas = 15;
 		int numeroEquipos=8;
+		crearLiga(nombreLiga, edadLiga, numeroEquipos, jornadasJugadas);
 		
+		ui.print( "\n\nLiga creada automáticamente"
+				+ liga.info());
+
+	}
+
+	private static void crearLiga(String nombreLiga, int edadLiga, int numeroEquipos, int jornadasJugadas) {
 		
+		String[] frasesInicio = {
+			"Calculando algorrinos",
+			"Invocando al bit ancestral",
+			"Generando booleanos cuánticos",
+			"Creando errores para darle encanto",
+			"Minando crypto con luz ajena",
+			"Ensordeciendo a Siri para darle dignidad",
+			"Escondiendo código usable",
+			"Agotando tu paciencia por no usar Linux",
+			"Te juro que es mi primera compilación precoz",
+			"Haciendo café para la batería",
+			"sudo ponme un 10"
+		};
+		
+		int numero = (int) Math.floor((Math.random())*frasesInicio.length);
+		
+		ui.print(frasesInicio[numero], true);
+		for( int i=0 ; i<5 ; i++ ) {
+			try {
+				ui.print(".",true);
+				Thread.sleep(400);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
 		equipos = crearListaEquipos(numeroEquipos, edadLiga);
 		arbitros = new Arbitro[numeroEquipos/2]; 
 		for (int i=0;i<arbitros.length;i++) {
@@ -42,28 +120,203 @@ public class Principal {
 		generarPartidos(calendario,jornadasJugadas);
 		clasificacion = new Clasificacion(equipos,calendario);
 		
-		ui.print( "Liga creada automáticamente"
-				+ liga.info()
-				+ "Pulse enter para volver");
-		ui.readKeyboard();
-		
 		//equipos[0].getJugadores()[0].cambiarEdad();
 		//ui.print(equipos[0].getJugadores()[0].getCategoria());
 
-
 	}
 
-	public void cambiarNumeroEquipos() {
+	
+	/**
+	 * Mostramos el ménu pricipal
+	 */
+	private static void menuPrincipal() {
 
-		int numeroEquipos=2;
-		while( !(numeroEquipos %2 ==0 && numeroEquipos >= 4 && numeroEquipos <= 40) ) {
-			numeroEquipos = ui.readKeyboardInt("Introduzca un número de equipos (par entre 4 y 40): ");
+		String[][] elements = {
+				{"1","1 - Crear nueva Liga"},
+				{"2","2 - Editar Liga"},
+				{"3","3 - Ver la clasificación"},
+				{"4","4 - Ver calendario"},
+				{"5","5 - Guardar clasificación en archivo"},
+				{"6","6 - Guardar calendario en archivo"},
+				{"",""},
+				{"0","0 - Salir"},
+				{"",""}
+		};
+		
+		String opcion = ui.menu("GENERADOR DE LIGAS",elements);
+		
+		switch( opcion.toUpperCase() ) {
+		case "1":
+			crearNuevaLiga();
+			break;
+		case "2":
+			if( checkLiga("Primero tiene que crear una liga", true) ) {
+				menuEditarLiga();
+			}
+			break;
+		case "3":
+			if( checkLiga("Primero tiene que crear una liga", true) ) {
+				mostrarClasificacion();
+			}
+			break;
+		case "4":
+			if( checkLiga("Primero tiene que crear una liga", true) ) {
+				mostrarCalendario();
+			}
+			break;
+		case "0":
+			ui.print("\nSaliendo... ¡Hasta otra amigo!\n\n");
+			System.exit(0);
 		}
 		
+		menuPrincipal();
+
+	}
+	
+	/**
+	 * Mostramos el ménu de Editar Liga
+	 */
+	private static void menuEditarLiga() {
+
+		String[][] elements = {
+			{"1","1 - Mostrar los datos de la liga"},
+			{"2","2 - Editar el nombre de la liga"},
+			{"3","3 - Cambiar resultados"},
+			{"",""},
+			{"0","0 - Volver"},
+			{"",""}
+		};
+
+		String opcion = ui.menu("EDITAR LA LIGA", elements);
 		
+		switch( opcion.toUpperCase() ) {
+		case "1":
+			ui.print(liga.info());
+			ui.readKeyboard("Pulse enter para continuar");
+			menuEditarLiga();
+			break;
+		case "2":
+			liga.cambiarNombre();
+			menuEditarLiga();
+			break;
+		case "3":
+			cambiarResultados();
+			menuEditarLiga();
+			break;
+		case "0":
+		}
+
+	}
+	
+	public static void cambiarResultados() {
+		
+		String[] cabecera = {"","Equipo local", "", "","Equipo visitante", "Árbitro"};
+		String[][] tabla = calendarioToStringArray();
+
+		for( int i=0 ; i<tabla.length ; i++ ) {
+			
+			//añadimos la numeración al principio
+			String[] nuevaFila = new String[tabla[i].length+1];
+
+			if( 2 > tabla[i].length ) { //Se sale del rango. Cabecera
+				nuevaFila[0] = "";
+			} else {
+				nuevaFila[0] = Integer.toString(i+1);
+			}
+
+			//copiamos el resto una columna más adelante (la 0 es para la numeración)
+			for( int j=0 ; j<tabla[i].length ; j++ ) {
+				nuevaFila[j+1] = tabla[i][j];
+			}
+			
+			tabla[i] = nuevaFila;
+		}
+		
+		ui.tabla(cabecera, tabla);
 
 	}
 
+
+	
+	private static void mostrarClasificacion() {
+		
+		ui.print(clasificacion.toString());
+		
+		ui.print("Pulse enter para continuar");
+		ui.readKeyboard();
+	}
+	
+
+	private static void mostrarCalendario() {
+		
+		String[] cabecera = {"Equipo local", "", "","Equipo visitante", "Árbitro"};
+		ui.tabla(cabecera, calendarioToStringArray());
+		
+		ui.print("Pulse enter para continuar");
+		ui.readKeyboard();
+	}
+	
+	private static String[][] calendarioToStringArray() {
+		
+		String[][] retorno = {};
+
+		Jornada[] jornadas = liga.getCalendario().getJornadas();
+		for( int i=0 ; i<jornadas.length ; i++ ) {
+			
+			String[] arrayTempJornada = {"Jornada " + (i+1)};
+			retorno = myutils.arrayAdd(retorno, arrayTempJornada);
+			
+			Partido[] partidos = jornadas[i].getPartidos();
+			for( Partido partido:partidos ) {
+			
+				String[] arrayTempPartido = partido.toStringArray();
+				retorno = myutils.arrayAdd(retorno, arrayTempPartido);
+				
+			}
+		}
+		
+		return retorno;
+	}
+	
+	/** 
+	 * Comprueba si se ha creado la liga, reportando un error y esperando a pulsar enter
+	 */
+	private static boolean checkLiga(String errorMensaje, boolean pulsar) {
+		
+		if( checkLiga(errorMensaje) ) {
+			return true;
+		} else {
+			ui.readKeyboard("Pulse enter para continuar.");
+			return false;
+		}
+	}
+
+	/** 
+	 * Comprueba si se ha creado la liga, reportanto un error en caso de que no
+	 */
+	private static boolean checkLiga(String errorMensaje) {
+		
+		if( checkLiga() ) {
+			return true;
+		} else {
+			ui.print(errorMensaje);
+			return false;
+		}
+	}
+	
+	/** 
+	 * Comprueba si se ha creado la liga
+	 */
+	private static boolean checkLiga() {
+		if( liga == null ) {
+			return false;
+		} else {
+			return true;
+		}
+			
+	}
+
+	
 	
 	private static Jugador[] crearListaJugadores(int numeroJugadores, int edad, Equipo equipo) {
 		String[] nombres = {"Pepe", "Juan", "María", "Melody", "Cayetano", "Christian", "Johnny",
@@ -235,203 +488,6 @@ public class Principal {
 		
 	}
 	
-	
-	/**
-	 * Mostramos el ménu pricipal
-	 */
-	private static void menu() {
-
-		String[][] elements = {
-				{"1","1 - Crear Liga"},
-				{"2","2 - Editar Liga"},
-				{"3","3 - Ver la clasificación"},
-				{"4","4 - Ver calendario"},
-				{"5","5 - Guardar clasificación en archivo"},
-				{"6","6 - Guardar calendario en archivo"},
-				{"",""},
-				{"0","0 - Salir"},
-				{"",""}
-		};
-		
-		String opcion = ui.menu("GENERADOR DE LIGAS",elements);
-		
-		switch( opcion.toUpperCase() ) {
-		case "1":
-			crearLiga();
-			break;
-		case "2":
-			if( checkLiga("Primero tiene que crear una liga", true) ) {
-				menuEditarLiga();
-			}
-			break;
-		case "3":
-			if( checkLiga("Primero tiene que crear una liga", true) ) {
-				mostrarClasificacion();
-			}
-			break;
-		case "4":
-			if( checkLiga("Primero tiene que crear una liga", true) ) {
-				mostrarCalendario();
-			}
-			break;
-		case "5":
-			if( checkLiga("Primero tiene que crear una liga", true) ) {
-				guardarClasificacion();
-			}
-			break;
-		case "6":
-			if( checkLiga("Primero tiene que crear una liga", true) ) {
-				guardarCalendario();
-			}
-			break;
-		case "0":
-			ui.print("\nSaliendo... ¡Hasta otra amigo!\n\n");
-			System.exit(0);
-		}
-		
-		menu();
-
-	}
-	
-	/**
-	 * Mostramos el ménu de Editar Liga
-	 */
-	private static void menuEditarLiga() {
-
-		String[][] elements = {
-			{"1","1 - Mostrar los datos de la liga"},
-			{"2","2 - Editar el nombre de la liga"},
-			{"3","3 - Editar equipos"},
-			{"",""},
-			{"0","0 - Volver"},
-			{"",""}
-		};
-
-		String opcion = ui.menu("EDITAR LA LIGA", elements);
-		
-		switch( opcion.toUpperCase() ) {
-		case "1":
-			ui.print(liga.info());
-			ui.readKeyboard("Pulse enter para volver");
-			menuEditarLiga();
-			break;
-		case "2":
-			liga.cambiarNombre();
-			menuEditarLiga();
-			break;
-		case "0":
-		}
-
-	}
-	
-	
-	private static void mostrarClasificacion() {
-		
-		ui.print(clasificacion.toString());
-		
-		ui.print("Pulse enter para volver");
-		ui.readKeyboard();
-	}
-	
-	
-	private static void guardarClasificacion() {
-		
-		if( checkLiga("No ha creado ninguna liga.\nCree una liga con la opción 1.") ) {
-			
-			String nombreArchivo = "Clasificacion.txt";
-			
-			ui.print("Ruta donde se guardará el archivo: " + datos.path() + "/");
-			ui.print("Nombre de archivo por defecto: "+nombreArchivo);
-			String leerNombreArchivo = ui.readKeyboard("Introduzca un nombre de archivo distinto (déjelo en blanco si no desea cambiarlo): ");
-			if( !leerNombreArchivo.equals("") ) {
-				nombreArchivo = leerNombreArchivo;
-			}
-			
-			ui.print("Se va a guardar en: "+datos.path()+"/"+nombreArchivo);
-			
-			if( datos.escribirArchivo(nombreArchivo, clasificacion.toString()) ) {
-				ui.print("Datos guardados correctamente.");
-			} else {
-				ui.print("Error al guardar los datos. Inténtelo de nuevo con otro nombre o ruta.");
-			}
-		}
-		
-		ui.print("Pulse enter para volver");
-		ui.readKeyboard();
-	}
-	
-	
-	private static void mostrarCalendario() {
-		
-		ui.print(liga.getCalendario().toString());
-		
-		ui.print("Pulse enter para volver");
-		ui.readKeyboard();
-	}
-	
-	private static void guardarCalendario() {
-		
-		if( checkLiga("No ha creado ninguna liga.\nCree una liga con la opción 1.") ) {
-			
-			String nombreArchivo = "Calendario.txt";
-			
-			ui.print("Ruta donde se guardará el archivo: " + datos.path() + "/");
-			ui.print("Nombre de archivo por defecto: "+nombreArchivo);
-			String leerNombreArchivo = ui.readKeyboard("Introduzca un nombre de archivo distinto (déjelo en blanco si no desea cambiarlo): ");
-			if( !leerNombreArchivo.equals("") ) {
-				nombreArchivo = leerNombreArchivo;
-			}
-			
-			ui.print("Se va a guardar en: "+datos.path()+"/"+nombreArchivo);
-			
-			if( datos.escribirArchivo(nombreArchivo, liga.getCalendario().toString()) ) {
-				ui.print("Datos guardados correctamente.");
-			} else {
-				ui.print("Error al guardar los datos. Inténtelo de nuevo con otro nombre o ruta.");
-			}
-		}
-		
-		ui.print("Pulse enter para volver");
-		ui.readKeyboard();
-	}
-	
-	/** 
-	 * Comprueba si se ha creado la liga, reportando un error y esperando a pulsar enter
-	 */
-	private static boolean checkLiga(String errorMensaje, boolean pulsar) {
-		
-		if( checkLiga(errorMensaje) ) {
-			return true;
-		} else {
-			ui.readKeyboard("Pulse enter para continuar.");
-			return false;
-		}
-	}
-
-	/** 
-	 * Comprueba si se ha creado la liga, reportanto un error en caso de que no
-	 */
-	private static boolean checkLiga(String errorMensaje) {
-		
-		if( checkLiga() ) {
-			return true;
-		} else {
-			ui.print(errorMensaje);
-			return false;
-		}
-	}
-	
-	/** 
-	 * Comprueba si se ha creado la liga
-	 */
-	private static boolean checkLiga() {
-		if( liga == null ) {
-			return false;
-		} else {
-			return true;
-		}
-			
-	}
 
 
 }

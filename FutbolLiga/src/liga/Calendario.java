@@ -1,8 +1,6 @@
 
 package liga;
 
-import java.util.Arrays;
-
 public class Calendario {
 	private Jornada[] jornadas;
 
@@ -78,6 +76,19 @@ public class Calendario {
 		this.jornadas = jornadas;
 	}
 
+	public String[][] toStringArray() {
+		
+		String[][] retorno = {};
+		for (int i=0;i<this.jornadas.length;i++)
+		{
+			String[][] arrayTemp = this.jornadas[i].toStringArray();
+			retorno = myutils.arrayAdd(retorno, arrayTemp);
+		}
+
+		return retorno;
+	}
+
+	
 	@Override
 	public String toString() {
 		String cadena = "Calendario de Liga: \n";

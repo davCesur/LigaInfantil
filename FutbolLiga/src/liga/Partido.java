@@ -39,6 +39,16 @@ public class Partido {
 		this.arbitro = arbitro;
 	}
 	
+	public String[] toStringArray() {
+		String[] retorno = {
+				this.local.getNombre(),
+				Integer.toString(this.gLocal),
+				Integer.toString(this.gVisitante),
+				this.visitante.getNombre(),
+				this.arbitro.getApellidos()};
+		return retorno;
+	}
+
 	@Override
 	public String toString() {
 		return this.local.getNombre()+" "+this.gLocal+":"

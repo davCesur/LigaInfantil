@@ -1,6 +1,8 @@
 
 package liga;
 
+import java.util.Arrays;
+
 public class Jornada {
 	private Partido[] partidos;
 	private boolean terminada=false;
@@ -27,6 +29,21 @@ public class Jornada {
 		this.terminada=true;
 	}
 
+	public String[][] toStringArray() {
+		
+		String[][] retorno = {};
+		for (int i=0;i<this.partidos.length;i++)
+		{
+			String[] arrayTemp = this.partidos[i].toStringArray();
+			retorno = myutils.arrayAdd(retorno, arrayTemp);
+		}
+
+//System.out.println( Arrays.toString(retorno) );
+		
+		return retorno;
+	}
+
+	
 	@Override
 	public String toString() {
 		String cadena = "Jornada: \n";

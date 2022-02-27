@@ -1,6 +1,10 @@
 
 package liga;
 
+/**
+ * @author miguel
+ *
+ */
 public class EquipoClasificacion {
 	
 	private Equipo equipo;
@@ -102,5 +106,18 @@ public class EquipoClasificacion {
 				empatados+"\t"+gFavor+"\t"+gContra+"\t"+dGoles+"\t"+puntos+"\n";
 		return cadena;
 	}
+
+//	public String[][] toStringArray() {
+//		String[][] cadena= equipo.getNombre();
+//		int longitud = cadena.length();
+//		int tabuladores = 6;
+//		int tabEquipo = longitud/8;
+//		for (int i=0; i<tabuladores-tabEquipo;i++) {
+//			cadena+="\t";
+//		}
+//		cadena+=jugados+"\t"+ganados+"\t"+perdidos+"\t"+
+//				empatados+"\t"+gFavor+"\t"+gContra+"\t"+dGoles+"\t"+puntos+"\n";
+//		return cadena;
+//	}
 
 }

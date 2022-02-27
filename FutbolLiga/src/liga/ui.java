@@ -4,8 +4,9 @@
  *
  */
 
-package utils;
+package liga;
 
+import java.util.Arrays;
 import java.util.Scanner;
 
 public class ui {
@@ -258,7 +259,8 @@ public class ui {
 	 */
 	public static String menu(String cabecera, String[][] elements) {
 
-		ui.cleanConsole();
+		//ui.cleanConsole();
+		ui.print("");
 		printMenu(cabecera, elements);
 
 		//Save valid options for check later
@@ -289,5 +291,97 @@ public class ui {
 	}
 
 
+	/**
+	 * Pinta una tabla 
+	 * @param array nombre de las columnas
+	 * @param matriz con los datos
+	 */
+	public static void tabla(String[] cabecera, String[][] tabla) {
+		
+		if( cabecera.length == 0 | tabla.length == 0 ) {
+			ui.print("Datos incorrectos recibidos en ui.tabla");
+		} else {
+			
+			//Determinamos la longitud máxima de cada celda
+			Integer[] anchoColumna = new Integer[cabecera.length];
+			for( String[] fila:tabla ) {
+				for( int i=0 ; i<fila.length ; i++ ) {
+					if( anchoColumna[i] == null ) {
+						anchoColumna[i] = fila[i].length();  
+					} else if ( anchoColumna[i] < fila[i].length() ) {
+						anchoColumna[i] = fila[i].length();  
+					}
+				}
+			}
+			
+			ui.print(Arrays.toString(anchoColumna));
+			
+			ui.print("");
+			//Pintamos la cabecera
+			ui.print("-", true);
+			for( int caracteres:anchoColumna ) {
+				//sumamos un caracter por el separador de cada columna
+				for( int i=0 ; i<=caracteres+1 ; i++ ) {
+					ui.print("-", true);
+				}
+				ui.print("-", true);
+			}
+			ui.print("");
+			ui.print("|", true);
+			for( int i=0 ; i<cabecera.length ; i++ ) {
+				ui.print(" ", true);
+				ui.print(cabecera[i], true);
+				for( int j=0 ; j<(anchoColumna[i]-cabecera[i].length()) ; j++ ) {
+					ui.print(" ", true);
+				}
+				ui.print(" ", true);
+				ui.print("|", true);
+			}
+			ui.print("");
+			ui.print("-", true);
+			for( int caracteres:anchoColumna ) {
+				for( int i=0 ; i<=caracteres+1 ; i++ ) {
+					ui.print("-", true);
+				}
+				ui.print("-", true);
+			}
+			
+			ui.print("");
+			for( String[] fila:tabla ) {
+				ui.print("|", true);
+				for( int i=0 ; i<cabecera.length ; i++ ) {
+					if( i < fila.length ) { //si está dentro del índice del array
+						ui.print(" ", true);
+						ui.print(fila[i], true);
+						for( int j=0 ; j<(anchoColumna[i]-fila[i].length()) ; j++ ) {
+							ui.print(" ", true);
+						}
+						ui.print(" ", true);
+						ui.print("|", true);
+					} else {
+						ui.print(" ", true);
+						for( int j=0 ; j<anchoColumna[i] ; j++ ) {
+							ui.print(" ", true);
+						}
+						ui.print(" ", true);
+						ui.print("|", true);
+					}
+				}
+				ui.print("");
+			}
+			
+			ui.print("-", true);
+			for( int caracteres:anchoColumna ) {
+				for( int i=0 ; i<=caracteres+1 ; i++ ) {
+					ui.print("-", true);
+				}
+				ui.print("-", true);
+			}
+			
+		}
+		
+		
+		
+	}
 
 }

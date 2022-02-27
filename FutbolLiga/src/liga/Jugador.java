@@ -1,8 +1,6 @@
 
 package liga;
 
-import utils.ui;
-
 public class Jugador extends Persona{
 	
 	private int dorsal;
@@ -98,7 +96,7 @@ public class Jugador extends Persona{
 		return super.toString()+//Imprimimos el toString de Persona
 				"Categoria: "+categoria+"\n"+				
 				"Equipo: "+equipo.getNombre()+"\n"+
-				"PosiciÃ³n: "+posicion+", Dorsal: "+dorsal+"\n";
+				"Posición: "+posicion+", Dorsal: "+dorsal+"\n";
 	}
 	
 }
