@@ -5,6 +5,8 @@ import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.Arrays;
 
+import utils.ui;
+
 public class Principal {
 
 	private static Equipo[] equipos;
@@ -55,7 +57,7 @@ public class Principal {
 		
 		int jornadasJugadas=-1;
 		while( jornadasJugadas<0 | jornadasJugadas>(numeroEquipos-1)*2 ) {
-			jornadasJugadas = ui.readKeyboardInt("Introduzca un número de jornadas hechas (entre 0 y "+( (numeroEquipos-1)*2 )+"): ");
+			jornadasJugadas = ui.readKeyboardInt("Introduzca un número de jornadas jugadas (entre 0 y "+( (numeroEquipos-1)*2 )+"): ");
 		}
 		
 		crearLiga(nombreLiga, edadLiga, numeroEquipos, jornadasJugadas);
@@ -83,6 +85,32 @@ public class Principal {
 
 	private static void crearLiga(String nombreLiga, int edadLiga, int numeroEquipos, int jornadasJugadas) {
 		
+		String[] frasesInicio = {
+			"Calculando algorrinos",
+			"Invocando al bit ancestral",
+			"Generando booleanos cuánticos",
+			"Creando errores para darle encanto",
+			"Minando crypto con luz ajena",
+			"Ensordeciendo a Siri para darle dignidad",
+			"Escondiendo código usable",
+			"Agotando tu paciencia por no usar Linux",
+			"Te juro que es mi primera compilación precoz",
+			"Haciendo café para la batería",
+			"sudo ponme un 10"
+		};
+		
+		int numero = (int) Math.floor((Math.random())*frasesInicio.length);
+		
+		ui.print(frasesInicio[numero], true);
+		for( int i=0 ; i<5 ; i++ ) {
+			try {
+				ui.print(".",true);
+				Thread.sleep(400);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}
+
 		equipos = crearListaEquipos(numeroEquipos, edadLiga);
 		arbitros = new Arbitro[numeroEquipos/2]; 
 		for (int i=0;i<arbitros.length;i++) {
@@ -106,33 +134,35 @@ public class Principal {
 	private static void menuPrincipal() {
 
 		String[][] elements = {
-				{"1","1 - Crear nueva Liga"},
-				{"2","2 - Editar Liga"},
+				{"1","1 - Asistente para nueva Liga"},
+				{"2","2 - Editar Liga actual"},
 				{"3","3 - Ver la clasificación"},
-				{"4","4 - Ver calendario"},
+				{"4","4 - Ver el calendario"},
+				{"5","5 - Exportar datos"},
+				{"6","6 - Guardar/restaurar datos"},
 				{"",""},
 				{"0","0 - Salir"},
 				{"",""}
 		};
 		
-		String opcion = ui.menu("GESTIÓN DE LIGAS",elements);
+		String opcion = ui.menu("GESTIóN DE LIGAS",elements);
 		
 		switch( opcion.toUpperCase() ) {
 		case "1":
 			crearNuevaLiga();
 			break;
 		case "2":
-			if( checkLiga("Primero tiene que crear una liga", true) ) {
+			if( checkLiga("Primero tiene que crear una liga") ) {
 				menuEditarLiga();
 			}
 			break;
 		case "3":
-			if( checkLiga("Primero tiene que crear una liga", true) ) {
+			if( checkLiga("Primero tiene que crear una liga") ) {
 				mostrarClasificacion();
 			}
 			break;
 		case "4":
-			if( checkLiga("Primero tiene que crear una liga", true) ) {
+			if( checkLiga("Primero tiene que crear una liga") ) {
 				mostrarCalendario();
 			}
 			break;
@@ -236,11 +266,14 @@ public class Principal {
 		partidoAeditar.setgLocal(resultado);
 		
 		resultado = ui.readKeyboardInt("Introduzca el resultado para:\n"+partidoAeditar.getVisitante().getNombre() );
-		while( resultado < 0 | resultado > 40 ) {
+		while( resultado < 0 | resultado > 20 ) {
 			resultado = ui.readKeyboardInt("Resultado incorrecto.\n"
-					+ "Introduzca un valor entre 0 y 40:");
+					+ "Introduzca un valor entre 0 y 20:");
 		}
 		partidoAeditar.setgVisitante(resultado);
+		
+		//Actualizamos la clasificación (no se actualiza si el partido aún no se ha jugado)
+		clasificacion.generarClasificacion(equipos, calendario);
 
 		ui.print("/nPartido actualizado correctamente:\n"+partidoAeditar.toString()+"\n");
 		ui.readKeyboard("Pulse enter para continuar");
@@ -259,10 +292,11 @@ public class Principal {
 	
 
 	private static void mostrarCalendario() {
-
-		ui.print(calendario.toString());
 		
-		ui.print("Pulse enter para continuar");
+		String[] cabecera = {"Equipo local", "", "","Equipo visitante", "Árbitro"};
+		ui.tabla(cabecera, calendarioToStringArray());
+		
+		ui.print("\n\nPulse enter para continuar");
 		ui.readKeyboard();
 	}
 	

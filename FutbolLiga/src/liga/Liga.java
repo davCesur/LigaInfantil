@@ -1,6 +1,8 @@
 
 package liga;
 
+import utils.ui;
+
 public class Liga {
 	private String nombre;
 	private Equipo[] equipos;

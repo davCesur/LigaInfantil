@@ -4,7 +4,7 @@
  *
  */
 
-package liga;
+package utils;
 
 import java.util.Arrays;
 import java.util.Scanner;

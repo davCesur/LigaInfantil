@@ -1,6 +1,8 @@
 
 package liga;
 
+import utils.ui;
+
 public class Jugador extends Persona{
 	
 	private int dorsal;
@@ -70,7 +72,7 @@ public class Jugador extends Persona{
 				rfinal = Integer.valueOf(categorias[i][2]);
 			}
 			catch (NumberFormatException ex) {
-				ui.print("Ocurrió un error en jugador.setCategoria try");
+				System.out.println("Ocurrió un error en jugador.setCategoria try");
 				System.exit(1);
 			}
 			

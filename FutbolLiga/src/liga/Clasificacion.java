@@ -4,7 +4,10 @@ package liga;
 public class Clasificacion {
 	private EquipoClasificacion [] tabla;
 
-	public Clasificacion (Equipo[] equipos, Calendario calendario) {
+	public Clasificacion( Equipo[] equipos, Calendario calendario) {
+		generarClasificacion(equipos, calendario);
+	}
+	public void generarClasificacion( Equipo[] equipos, Calendario calendario) {
 		//Crear la tabla
 		int numeroEquipos = equipos.length;
 
@@ -66,7 +69,7 @@ public class Clasificacion {
 
 	}
 	private void ordenar() {
-		//OrdenaciÃ³n por bubbleSort
+		//Ordenación por bubbleSort
 
 		int n = this.tabla.length;  
 		EquipoClasificacion temp = null;  
