@@ -7,6 +7,7 @@ public class Clasificacion {
 	public Clasificacion( Equipo[] equipos, Calendario calendario) {
 		generarClasificacion(equipos, calendario);
 	}
+	
 	public void generarClasificacion( Equipo[] equipos, Calendario calendario) {
 		//Crear la tabla
 		int numeroEquipos = equipos.length;
@@ -110,6 +111,24 @@ public class Clasificacion {
 		}
 
 	}
+	
+	public String[][] toStringArray() {
+		String[][] retorno = new String[tabla.length][];
+		for (int i=0; i<tabla.length; i++) {
+			
+			//Añadimos la numeración en primer lugar
+			String[] equipoTemp = tabla[i].toStringArray();
+			String[] tablaTemp = new String[equipoTemp.length+1];
+			tablaTemp[0] = Integer.toString(i+1);
+			for (int j=0; j<equipoTemp.length; j++) {
+				tablaTemp[j+1] = equipoTemp[j];
+			}
+			
+			retorno[i] = tablaTemp;
+		}
+		return retorno;
+	}
+	
 	@Override
 	public String toString() {
 		String cadena = "Pos\tEquipo\t\t\t\t\t\t"+"J\t"+"G\t"+"P\t"+"E\t"+"GF\t"+"GC\t"+"DG\t"+"Pts\n";

@@ -304,17 +304,16 @@ public class ui {
 			
 			//Determinamos la longitud máxima de cada celda
 			Integer[] anchoColumna = new Integer[cabecera.length];
+			for( int i=0 ; i<cabecera.length ; i++ ) {
+				anchoColumna[i] = cabecera[i].length();  
+			}
 			for( String[] fila:tabla ) {
 				for( int i=0 ; i<fila.length ; i++ ) {
-					if( anchoColumna[i] == null ) {
-						anchoColumna[i] = fila[i].length();  
-					} else if ( anchoColumna[i] < fila[i].length() ) {
+					if( anchoColumna[i] < fila[i].length() ) {
 						anchoColumna[i] = fila[i].length();  
 					}
 				}
 			}
-			
-			ui.print(Arrays.toString(anchoColumna));
 			
 			ui.print("");
 			//Pintamos la cabecera

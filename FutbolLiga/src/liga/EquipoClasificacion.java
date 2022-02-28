@@ -107,17 +107,11 @@ public class EquipoClasificacion {
 		return cadena;
 	}
 
-//	public String[][] toStringArray() {
-//		String[][] cadena= equipo.getNombre();
-//		int longitud = cadena.length();
-//		int tabuladores = 6;
-//		int tabEquipo = longitud/8;
-//		for (int i=0; i<tabuladores-tabEquipo;i++) {
-//			cadena+="\t";
-//		}
-//		cadena+=jugados+"\t"+ganados+"\t"+perdidos+"\t"+
-//				empatados+"\t"+gFavor+"\t"+gContra+"\t"+dGoles+"\t"+puntos+"\n";
-//		return cadena;
-//	}
+	public String[] toStringArray() {
+		String[] retorno = {equipo.getNombre(), Integer.toString(jugados), Integer.toString(ganados),
+				Integer.toString(perdidos), Integer.toString(empatados), Integer.toString(gFavor),
+				Integer.toString(gContra), Integer.toString(dGoles), Integer.toString(puntos)};
+		return retorno;
+	}
 
 }

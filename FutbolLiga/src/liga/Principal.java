@@ -24,7 +24,7 @@ public class Principal {
 		
 	}
 	
-	private static void crearNuevaLiga() {
+	private static void asistenteNuevaLiga() {
 		
 		String nombreLiga = ui.readKeyboardString("Introduzca el nombre de la liga: ");
 		while( nombreLiga.equals("") | nombreLiga.length()>20 ) {
@@ -149,7 +149,7 @@ public class Principal {
 		
 		switch( opcion.toUpperCase() ) {
 		case "1":
-			crearNuevaLiga();
+			asistenteNuevaLiga();
 			break;
 		case "2":
 			if( checkLiga("Primero tiene que crear una liga") ) {
@@ -272,10 +272,10 @@ public class Principal {
 		}
 		partidoAeditar.setgVisitante(resultado);
 		
-		//Actualizamos la clasificación (no se actualiza si el partido aún no se ha jugado)
+		//Actualizamos la clasificación
 		clasificacion.generarClasificacion(equipos, calendario);
 
-		ui.print("/nPartido actualizado correctamente:\n"+partidoAeditar.toString()+"\n");
+		ui.print("\nPartido actualizado correctamente:\n"+partidoAeditar.toString()+"\n");
 		ui.readKeyboard("Pulse enter para continuar");
 
 	}
@@ -284,9 +284,10 @@ public class Principal {
 	
 	private static void mostrarClasificacion() {
 		
-		ui.print(clasificacion.toString());
+		String[] cabecera = {"Pos","Equipo","J","G","P","E","GF","GC","DG","Pts"};
+		ui.tabla(cabecera, clasificacion.toStringArray());
 		
-		ui.print("Pulse enter para continuar");
+		ui.print("\n\nPulse enter para continuar");
 		ui.readKeyboard();
 	}
 	

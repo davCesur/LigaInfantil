@@ -4,8 +4,8 @@ package liga;
 public class Partido {
 	private Equipo local;
 	private Equipo visitante;
-	private int gLocal;
-	private int gVisitante;
+	private Integer gLocal;
+	private Integer gVisitante;
 	private Arbitro arbitro;
 	
 	public Equipo getLocal() {
@@ -40,10 +40,20 @@ public class Partido {
 	}
 	
 	public String[] toStringArray() {
+		String golesLocal="-";
+		if( this.gLocal != null ) {
+			golesLocal=this.gLocal.toString();
+		}
+		String golesVisitante="-";
+		if( this.gVisitante != null ) {
+			golesVisitante=this.gVisitante.toString();
+		}
+		//String  = this.gVisitante.toString();
+		
 		String[] retorno = {
 				this.local.getNombre(),
-				Integer.toString(this.gLocal),
-				Integer.toString(this.gVisitante),
+				golesLocal,
+				golesVisitante,
 				this.visitante.getNombre(),
 				this.arbitro.getApellidos()};
 		return retorno;
