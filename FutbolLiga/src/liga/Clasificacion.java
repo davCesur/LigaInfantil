@@ -20,14 +20,18 @@ public class Clasificacion {
 		//Rellenarla
 		Jornada[] jornadas = calendario.getJornadas();
 		for (Jornada jor : jornadas) {
-			if (jor.isTerminada()) {
-				Partido[] partidos = jor.getPartidos(); 
-				for (Partido par: partidos) {
+
+			Partido[] partidos = jor.getPartidos(); 
+			for (Partido par: partidos) {
+				if( par.isJugado() ) {
+
 					Equipo local = par.getLocal();
 					Equipo visitante = par.getVisitante();
+
 					//Buscar a los equipos en la tabla de clasificacion
 					int contador=0;
 					EquipoClasificacion localClas = this.tabla[contador];
+
 					//Busco al local
 					while (localClas.getEquipo()!=local) {
 						contador++;
@@ -35,11 +39,13 @@ public class Clasificacion {
 					}
 					contador=0;
 					EquipoClasificacion visitClas = this.tabla[contador];
+
 					//Busco al visitante
 					while (visitClas.getEquipo()!=visitante) {
 						contador++;
 						visitClas=this.tabla[contador];
 					}
+
 					//Asignamos los valores
 					int golesLocales=par.getgLocal();
 					int golesVisitantes=par.getgVisitante();

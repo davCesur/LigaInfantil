@@ -57,8 +57,9 @@ public class Principal {
 		
 		int jornadasJugadas=-1;
 		while( jornadasJugadas<0 | jornadasJugadas>(numeroEquipos-1)*2 ) {
-			jornadasJugadas = ui.readKeyboardInt("Introduzca un número de jornadas jugadas (entre 0 y "+( (numeroEquipos-1)*2 )+"): ");
+			jornadasJugadas = ui.readKeyboardInt("Introduzca el número de jornadas jugadas (entre 0 y "+( (numeroEquipos-1)*2 )+"): ");
 		}
+		
 		
 		crearLiga(nombreLiga, edadLiga, numeroEquipos, jornadasJugadas);
 		
@@ -122,9 +123,6 @@ public class Principal {
 		generarPartidos(calendario,jornadasJugadas);
 		clasificacion = new Clasificacion(equipos,calendario);
 		
-		//equipos[0].getJugadores()[0].cambiarEdad();
-		//ui.print(equipos[0].getJugadores()[0].getCategoria());
-
 	}
 
 	
@@ -152,19 +150,22 @@ public class Principal {
 			asistenteNuevaLiga();
 			break;
 		case "2":
-			if( checkLiga("Primero tiene que crear una liga") ) {
+			if( checkLiga("Primero tiene que crear una liga") )
 				menuEditarLiga();
-			}
+			else
+				ui.readKeyboard("Pulse enter para continuar");
 			break;
 		case "3":
-			if( checkLiga("Primero tiene que crear una liga") ) {
+			if( checkLiga("Primero tiene que crear una liga") )
 				mostrarClasificacion();
-			}
+			else
+				ui.readKeyboard("Pulse enter para continuar");
 			break;
 		case "4":
-			if( checkLiga("Primero tiene que crear una liga") ) {
+			if( checkLiga("Primero tiene que crear una liga") )
 				mostrarCalendario();
-			}
+			else
+				ui.readKeyboard("Pulse enter para continuar");
 			break;
 		case "0":
 			ui.print("\nSaliendo... ¡Hasta otra amigo!\n\n");
@@ -271,6 +272,7 @@ public class Principal {
 					+ "Introduzca un valor entre 0 y 20:");
 		}
 		partidoAeditar.setgVisitante(resultado);
+		partidoAeditar.jugado();
 		
 		//Actualizamos la clasificación
 		clasificacion.generarClasificacion(equipos, calendario);
@@ -526,6 +528,7 @@ public class Principal {
 				int golesVisitantes = (int)Math.floor((Math.random())*MAXGOLES);
 				par.setgLocal(golesLocales);
 				par.setgVisitante(golesVisitantes);
+				par.jugado();
 //System.out.println(par);
 			}
 			jornadas[i].terminar();

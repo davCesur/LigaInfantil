@@ -2,12 +2,22 @@
 package liga;
 
 public class Partido {
+	private boolean jugado=false;
 	private Equipo local;
 	private Equipo visitante;
-	private Integer gLocal;
-	private Integer gVisitante;
+	private int gLocal;
+	private int gVisitante;
 	private Arbitro arbitro;
 	
+	public void jugado() {
+		this.jugado=true;
+	}
+	public boolean isJugado() {
+		return jugado;
+	}
+	public void setJugado(boolean jugado) {
+		this.jugado = jugado;
+	}
 	public Equipo getLocal() {
 		return local;
 	}
@@ -41,14 +51,11 @@ public class Partido {
 	
 	public String[] toStringArray() {
 		String golesLocal="-";
-		if( this.gLocal != null ) {
-			golesLocal=this.gLocal.toString();
-		}
 		String golesVisitante="-";
-		if( this.gVisitante != null ) {
-			golesVisitante=this.gVisitante.toString();
+		if(this.jugado) {
+			golesLocal= Integer.toString(this.gLocal);
+			golesVisitante=Integer.toString(this.gVisitante);
 		}
-		//String  = this.gVisitante.toString();
 		
 		String[] retorno = {
 				this.local.getNombre(),
